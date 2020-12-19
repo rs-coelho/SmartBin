@@ -1,7 +1,22 @@
+import configparser
+import os
+
 from sqlalchemy import Column, ForeignKey, Date, Time, String, DateTime, DECIMAL, TIMESTAMP, BOOLEAN, \
-    ForeignKeyConstraint, Index
+    ForeignKeyConstraint, Index, create_engine,MetaData
+from sqlalchemy.orm import scoped_session,sessionmaker
 from sqlalchemy.dialects.mysql import INTEGER
+
 from model.DB_Build import Base, schema_name
+
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(__file__), '../settings/settings.ini'))
+
+engine = create_engine(
+    'mysql+pymysql://' + config.get('db', 'local_user') + ':' + config.get('db', 'local_pass') + '@' +
+    config.get('db', 'local_host') + '', convert_unicode=True)
+metadata = MetaData(bind=engine)
+db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+db_session.configure(bind=engine)
 
 
 # Foram criados init apenas para visualização do que estará, essas funções não serão utilizadas
@@ -78,6 +93,11 @@ class ListaUsers(Base):
     #     self.password = 'batat1nh4'
     #     self.pontos = 1000
     #     self.tipo_user = 'CL'
+
+    @staticmethod
+    def get_user(id_user):
+        user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user)
+        return user
 
 
 class TipoUser(Base):
