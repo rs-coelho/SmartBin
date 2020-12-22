@@ -25,7 +25,7 @@ def main():
 
 @app.route('/create/user', methods=['POST'])
 def create_user():
-    return View.error(404,'Função indisponivel')
+    return UserControl.create_user()
 
 
 @app.route('/get/user', methods=['GET'])
