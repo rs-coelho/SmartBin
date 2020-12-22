@@ -2,8 +2,8 @@ import configparser
 import os
 
 from sqlalchemy import Column, ForeignKey, Date, Time, String, DateTime, DECIMAL, TIMESTAMP, BOOLEAN, \
-    ForeignKeyConstraint, Index, create_engine,MetaData
-from sqlalchemy.orm import scoped_session,sessionmaker
+    ForeignKeyConstraint, Index, create_engine, MetaData
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.dialects.mysql import INTEGER
 
 from model.DB_Build import Base, schema_name
@@ -98,6 +98,18 @@ class ListaUsers(Base):
     def get_user(id_user):
         user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user)
         return user
+
+    @staticmethod
+    def delete_user(id_user):
+        # https://stackoverflow.com/questions/27158573/how-to-delete-a-record-by-id-in-flask-sqlalchemy
+        user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user).delete()
+        return user
+
+    @staticmethod
+    def change_user_name(id_user, nome):
+        # chercher l'implementation pur changer quelque chose oú DB
+        # https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
+        pass
 
 
 class TipoUser(Base):

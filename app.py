@@ -1,7 +1,9 @@
 # Inset Flask app Here
 
 
-from flask import Flask
+from requests import get
+from flask import Flask, jsonify
+
 from control.view import View
 from control.control import UserControl
 
@@ -9,6 +11,11 @@ from control.control import UserControl
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+
+# CHANNEL ID thingspeak - 1246821
+# READ KEY thingspeak   - PXT4EAHQ28DYIXAP
+# WRITE KEY thingspeak  - 400WQ27M8AEH9KP6
 
 
 @app.route('/')
@@ -28,7 +35,16 @@ def get_user():
 
 @app.route('/delete/user', methods=['DELETE'])
 def delete_user():
-    return View.error(404,'Função indisponivel')
+    return UserControl.delete_user()
+
+
+@app.route('/ts/feed', methods=['GET'])
+def get_thingspeak_feed():
+    url = 'https://api.thingspeak.com/channels/1246821/feeds.json'
+    params = {'api_key': 'PXT4EAHQDYIXAP'}  # INSERT READ API KEY HERE
+    timeout = None
+    r = get(url, params=params, timeout=timeout)
+    return jsonify(r)
 
 
 @app.after_request

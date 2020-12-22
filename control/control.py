@@ -19,5 +19,16 @@ class UserControl:
         result = [{'id_user': rst[0]} for rst in user]
         return View.success(result)
 
+    @staticmethod
+    def delete_user():
+        try:
+            args = parser.parse(GET_USER, request)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        # implement get_user
+        user = ListaUsers.delete_user(GET_USER)
+        result = [{'id_user': rst[0]} for rst in user]
+        return View.success(result)
+
 
 
