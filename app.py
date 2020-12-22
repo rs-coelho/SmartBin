@@ -38,6 +38,11 @@ def delete_user():
     return UserControl.delete_user()
 
 
+@app.route('/change/user', methods=['POST'])
+def change_user():
+    return UserControl.change_user()
+
+
 @app.route('/ts/feed', methods=['GET'])
 def get_thingspeak_feed():
     url = 'https://api.thingspeak.com/channels/1246821/feeds.json'

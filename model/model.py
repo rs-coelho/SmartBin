@@ -95,6 +95,20 @@ class ListaUsers(Base):
     #     self.tipo_user = 'CL'
 
     @staticmethod
+    def create_user(id_user, nome=None, email=None, password=None, pontos=None, tipo_user=None):
+        # chercher l'implementation pur changer quelque chose oú DB
+
+        user = ListaUsers()
+        user.nome = nome if nome is not None else user.nome
+        user.email = email if email is not None else user.email
+        user.password = password if password is not None else user.password
+        user.nome = pontos if pontos is not None else user.pontos
+        user.nome = tipo_user if tipo_user is not None else user.tipo_user
+        db_session.insertorm(user)
+        db_session.commit()
+        return user
+
+    @staticmethod
     def get_user(id_user):
         user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user)
         return user
@@ -106,10 +120,18 @@ class ListaUsers(Base):
         return user
 
     @staticmethod
-    def change_user_name(id_user, nome):
+    def change_user(id_user, nome=None, email=None, password=None, pontos=None, tipo_user=None):
         # chercher l'implementation pur changer quelque chose oú DB
         # https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
-        pass
+        user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user)
+        user.nome = nome if nome is not None else user.nome
+        user.email = email if email is not None else user.email
+        user.password = password if password is not None else user.password
+        user.nome = pontos if pontos is not None else user.pontos
+        user.nome = tipo_user if tipo_user is not None else user.tipo_user
+        db_session.commit()
+        return user
+
 
 
 class TipoUser(Base):
