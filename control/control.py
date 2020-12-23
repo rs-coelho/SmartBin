@@ -22,10 +22,11 @@ class UserControl:
     def get_user():
         try:
             args = parser.parse(GET_USER, request)
+            print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.get_user(GET_USER)
-        result = [{'id_user': rst[0]} for rst in user]
+        user = ListaUsers.get_user(args)
+        result = [{'id_user': rst[0].id_user} for rst in user]
         return View.success(result)
 
     @staticmethod

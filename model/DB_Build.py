@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(__file__), '../settings/settings.ini'))
 Base = declarative_base()
-schema_name = 'LixeiraIntDB'
+schema_name = 'LixeiraInteligente'
 
 
 class DBBuild:

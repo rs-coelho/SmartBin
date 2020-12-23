@@ -32,12 +32,12 @@ class ListaHubs(Base):
     ip = Column(String(15), nullable=False)
     enderesso_fisico = Column(String(70), nullable=False)
 
-    # def __init__(self):
-    #     self.id_hub = 0
-    #     self.id_lixeira = 1
-    #     self.nome = 'central'
-    #     self.ip = '127.0.0.1'
-    #     self.enderesso_fisico = 'Av. Ficticia n420'
+    def __init__(self):
+        self.id_hub = 0
+        self.id_lixeira = 1
+        self.nome = 'central'
+        self.ip = '127.0.0.1'
+        self.enderesso_fisico = 'Av. Ficticia n420'
 
 
 class ListaLixeiras(Base):
@@ -50,11 +50,11 @@ class ListaLixeiras(Base):
     status = Column(INTEGER(unsigned=True), nullable=False)
     # Não tem id do hab pois ele já está na tabela do hub jutamente com o id da lixeira
 
-    # def __init__(self):
-    #     self.id_lixeira = 1
-    #     self.enderesso_fisico = ''
-    #     self.capacidade = 100
-    #    self.status = 0
+    def __init__(self):
+        self.id_lixeira = 1
+        self.enderesso_fisico = ''
+        self.capacidade = 100
+        self.status = 0
 
 
 class ListaItens(Base):
@@ -67,12 +67,12 @@ class ListaItens(Base):
     peso = Column(DECIMAL(4, 4), nullable=False)
     pontos = Column(INTEGER(unsigned=True), nullable=False)
 
-    # def __init__(self):
-    #    self.id_item = '123456789'
-    #    self.nome = 'nome produto'
-    #    self.material = 'ME'  # PL/PA 'metal/plastico/papel'
-    #    self.peso = 0
-    #    self.pontos = 10
+    def __init__(self):
+       self.id_item = '123456789'
+       self.nome = 'nome produto'
+       self.material = 'ME'  # PL/PA 'metal/plastico/papel'
+       self.peso = 0
+       self.pontos = 10
 
 
 class ListaUsers(Base):
@@ -86,13 +86,13 @@ class ListaUsers(Base):
     pontos = Column(INTEGER(unsigned=True), nullable=False)
     tipo_user = Column(String(2), nullable=False)
 
-    # def __init__(self):
-    #     self.id_user = 1234
-    #     self.nome = 'Cleitin Corta Giro'
-    #     self.email = 'nomealeatorio@empresa.com'
-    #     self.password = 'batat1nh4'
-    #     self.pontos = 1000
-    #     self.tipo_user = 'CL'
+    def __init__(self):
+        self.id_user = 1234
+        self.nome = 'Cleitin Corta Giro'
+        self.email = 'nomealeatorio@empresa.com'
+        self.password = 'batat1nh4'
+        self.pontos = 1000
+        self.tipo_user = 'CL'
 
     @staticmethod
     def create_user(id_user, nome=None, email=None, password=None, pontos=None, tipo_user=None):
@@ -110,7 +110,7 @@ class ListaUsers(Base):
 
     @staticmethod
     def get_user(id_user):
-        user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user)
+        user = db_session.query(ListaUsers).filter_by(id_user=id_user).all()
         return user
 
     @staticmethod
@@ -141,9 +141,9 @@ class TipoUser(Base):
     tipo_user = Column(String(2), primary_key=True)
     nome = Column(String(15), nullable=False)
 
-    # def __init__(self):
-    #    self.tipo_user = 'CL'  # CO/A
-    #    self.nome = 'client'  # colector/admin
+    def __init__(self):
+       self.tipo_user = 'CL'  # CO/A
+       self.nome = 'client'  # colector/admin
 
 
 class InventarioItens(Base):
@@ -154,7 +154,7 @@ class InventarioItens(Base):
     id_item = Column(String(12), ForeignKey(schema_name + '.lista_itens.id_item'), nullable=False)
     id_user = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_users.id_user'), nullable=False)
 
-    # def __init__(self):
-    #     self.id_lixeira = 1
-    #     self.id_item = '123456789'
-    #     self.id_user = 1234
+    def __init__(self):
+        self.id_lixeira = 1
+        self.id_item = '123456789'
+        self.id_user = 1234

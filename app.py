@@ -30,6 +30,7 @@ def create_user():
 
 @app.route('/get/user', methods=['GET'])
 def get_user():
+    print('Request recevied')
     return UserControl.get_user()
 
 
@@ -46,10 +47,10 @@ def change_user():
 @app.route('/ts/feed', methods=['GET'])
 def get_thingspeak_feed():
     url = 'https://api.thingspeak.com/channels/1246821/feeds.json'
-    params = {'api_key': 'PXT4EAHQDYIXAP'}  # INSERT READ API KEY HERE
+    params = {'api_key': 'PXT4EAHQ28DYIXAP', 'results': 1}  # INSERT READ API KEY HERE
     timeout = None
     r = get(url, params=params, timeout=timeout)
-    return jsonify(r)
+    return r
 
 
 @app.after_request
