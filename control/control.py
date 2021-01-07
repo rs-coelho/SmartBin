@@ -25,8 +25,8 @@ class UserControl:
             print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.get_user(args)
-        result = [{'id_user': rst[0].id_user} for rst in user]
+        user = ListaUsers.get_user(args['id_user'])
+        result = [{'id_user': rst.id_user} for rst in user]
         return View.success(result)
 
     @staticmethod
