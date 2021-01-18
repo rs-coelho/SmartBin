@@ -9,7 +9,6 @@ def validate_access_token_master_level(access_token):
     #    raise ValidationError(GIVEN_USER_HAS_NOT_THE_REQUIRED_LEVEL)
 
 CREATE_USER = {
-    'id_user': fields.Str(required=True),
     'nome': fields.Str(required=True),
     'email': fields.Str(required=True),
     'password': fields.Str(required=True),
@@ -24,11 +23,13 @@ GET_USER = {
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }
 
+
 LOGIN_USER = {
     'email': fields.Str(required=True),
     'password': fields.Str(required=True),
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }
+
 
 CHANGE_USER = {
     'id_user': fields.Str(required=True),

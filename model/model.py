@@ -95,16 +95,17 @@ class ListaUsers(Base):
         self.tipo_user = 'CL'
 
     @staticmethod
-    def create_user(id_user, nome=None, email=None, password=None, pontos=None, tipo_user=None):
+    def create_user(nome=None, email=None, password=None, pontos=None, tipo_user=None):
         # chercher l'implementation pur changer quelque chose oú DB
 
         user = ListaUsers()
-        user.nome = nome if nome is not None else user.nome
-        user.email = email if email is not None else user.email
-        user.password = password if password is not None else user.password
-        user.nome = pontos if pontos is not None else user.pontos
-        user.nome = tipo_user if tipo_user is not None else user.tipo_user
-        db_session.insertorm(user)
+        user.id_user = 12
+        user.nome = nome
+        user.email = email
+        user.password = password
+        user.pontos = pontos if pontos is not None else 0
+        user.tipo_user = tipo_user
+        db_session.add(user)
         db_session.commit()
         return user
 
@@ -115,7 +116,7 @@ class ListaUsers(Base):
 
     @staticmethod
     def login_user(email,password):
-        filter  = [ListaUsers.email == email, ListaUsers.password == password,]
+        filter = [ListaUsers.email == email, ListaUsers.password == password,]
         user = db_session.query(ListaUsers).filter(and_(*filter)).all()
         return user
 

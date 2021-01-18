@@ -14,8 +14,8 @@ class UserControl:
             args = parser.parse(CREATE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.create_user(CREATE_USER)
-        result = [{'id_user': rst[0]} for rst in user]
+        user = ListaUsers.create_user(args['nome'], args['email'], args['password'], args['pontos'], args['tipo_user'])
+        result = {'id_user': user.id_user, 'nome': user.nome, 'email': user.email}
         return View.success(result)
 
     @staticmethod
