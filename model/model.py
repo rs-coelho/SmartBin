@@ -2,7 +2,7 @@ import configparser
 import os
 
 from sqlalchemy import Column, ForeignKey, Date, Time, String, DateTime, DECIMAL, TIMESTAMP, BOOLEAN, \
-    ForeignKeyConstraint, Index, create_engine, MetaData
+    ForeignKeyConstraint, Index, create_engine, MetaData, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.dialects.mysql import INTEGER
 
@@ -111,6 +111,12 @@ class ListaUsers(Base):
     @staticmethod
     def get_user(id_user):
         user = db_session.query(ListaUsers).filter_by(id_user=id_user).all()
+        return user
+
+    @staticmethod
+    def login_user(email,password):
+        filter  = [ListaUsers.email == email, ListaUsers.password == password,]
+        user = db_session.query(ListaUsers).filter(and_(*filter)).all()
         return user
 
     @staticmethod

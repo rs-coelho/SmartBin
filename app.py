@@ -30,8 +30,13 @@ def create_user():
 
 @app.route('/get/user', methods=['GET'])
 def get_user():
-    print('Request recevied')
     return UserControl.get_user()
+
+
+@app.route('/login/user', methods=['GET'])
+def login_user():
+    print('Request recevied')
+    return UserControl.login_user()
 
 
 @app.route('/delete/user', methods=['DELETE'])

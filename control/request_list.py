@@ -24,6 +24,12 @@ GET_USER = {
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }
 
+LOGIN_USER = {
+    'email': fields.Str(required=True),
+    'password': fields.Str(required=True),
+    # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
+}
+
 CHANGE_USER = {
     'id_user': fields.Str(required=True),
     'nome': fields.Str(required=False),
