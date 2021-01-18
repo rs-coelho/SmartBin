@@ -99,6 +99,11 @@ class ListaUsers(Base):
         # chercher l'implementation pur changer quelque chose oú DB
 
         list_size = len(db_session.query(ListaUsers).all()) + 1
+        email_list = db_session.query(ListaUsers.email).all()
+        print(email_list)
+        if email in email_list[:][1]:
+            print('Bad')
+            return 0
         user = ListaUsers()
         user.id_user = list_size
         user.nome = nome

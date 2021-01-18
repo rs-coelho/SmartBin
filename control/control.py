@@ -15,6 +15,8 @@ class UserControl:
         except ValidationError as err:
             return View.error(400, str(err))
         user = ListaUsers.create_user(args['nome'], args['email'], args['password'], args['pontos'], args['tipo_user'])
+        if user == 0:
+            return View.error(405, 'email already in use')
         result = {'id_user': user.id_user, 'nome': user.nome, 'email': user.email}
         return View.success(result)
 
