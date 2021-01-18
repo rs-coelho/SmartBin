@@ -98,8 +98,9 @@ class ListaUsers(Base):
     def create_user(nome=None, email=None, password=None, pontos=None, tipo_user=None):
         # chercher l'implementation pur changer quelque chose oú DB
 
+        list_size = len(db_session.query(ListaUsers).all()) + 1
         user = ListaUsers()
-        user.id_user = 12
+        user.id_user = list_size
         user.nome = nome
         user.email = email
         user.password = password
