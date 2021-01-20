@@ -58,6 +58,10 @@ def create_item():
 def get_item():
     return ItemControl.get_item()
 
+@app.route('/get/item/full', methods=['GET'])
+def get_full_item_list():
+    return ItemControl.get_full_item_list()
+
 
 @app.route('/ts/feed', methods=['GET'])
 def get_thingspeak_feed():

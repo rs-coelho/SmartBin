@@ -95,6 +95,10 @@ class ListaItens(Base):
         item = db_session.query(ListaItens).filter_by(id_item=id_item).all()
         return item
 
+    @staticmethod
+    def get_full_item_list():
+        return db_session.query(ListaItens).all()
+
 
 class ListaUsers(Base):
     __tablename__ = 'lista_users'

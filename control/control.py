@@ -84,3 +84,13 @@ class ItemControl:
         item = ListaItens.get_item(args['id_item'])
         result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material} for rst in item]
         return View.success(result)
+
+    @staticmethod
+    def get_full_item_list():
+        try:
+            item = ListaItens.get_full_item_list()
+        except ValidationError as err:
+            return View.error(400, str(err))
+
+        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material} for rst in item]
+        return View.success(result)
