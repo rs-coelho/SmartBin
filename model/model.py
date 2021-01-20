@@ -74,6 +74,27 @@ class ListaItens(Base):
        self.peso = 0
        self.pontos = 10
 
+    @staticmethod
+    def create_item(nome=None, material=None, peso=None, pontos=0):
+        # chercher l'implementation pur changer quelque chose oú DB
+
+        list_size = len(db_session.query(ListaItens).all())
+        item = ListaItens()
+        item.id_item = list_size + 1
+        item.nome = nome
+        item.material = material
+        item.peso = peso
+        item.pontos = pontos
+        print(item.nome,item.material,item.peso)
+        db_session.add(item)
+        db_session.commit()
+        return item
+
+    @staticmethod
+    def get_item(id_item):
+        item = db_session.query(ListaItens).filter_by(id_item=id_item).all()
+        return item
+
 
 class ListaUsers(Base):
     __tablename__ = 'lista_users'
@@ -95,21 +116,21 @@ class ListaUsers(Base):
         self.tipo_user = 'CL'
 
     @staticmethod
-    def create_user(nome=None, email=None, password=None, pontos=None, tipo_user=None):
+    def create_user(nome=None, email=None, password=None, pontos=0, tipo_user='CL'):
         # chercher l'implementation pur changer quelque chose oú DB
 
-        list_size = len(db_session.query(ListaUsers).all()) + 1
+        list_size = len(db_session.query(ListaUsers).all())
         email_list = db_session.query(ListaUsers.email).all()
         print(email_list)
         if email in email_list[:][1]:
             print('Bad')
             return 0
         user = ListaUsers()
-        user.id_user = list_size
+        user.id_user = list_size + 1
         user.nome = nome
         user.email = email
         user.password = password
-        user.pontos = pontos if pontos is not None else 0
+        user.pontos = pontos
         user.tipo_user = tipo_user
         db_session.add(user)
         db_session.commit()
@@ -144,7 +165,6 @@ class ListaUsers(Base):
         user.nome = tipo_user if tipo_user is not None else user.tipo_user
         db_session.commit()
         return user
-
 
 
 class TipoUser(Base):

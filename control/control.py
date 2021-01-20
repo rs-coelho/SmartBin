@@ -3,8 +3,8 @@ from webargs.flaskparser import parser
 from marshmallow import ValidationError
 from flask import request
 
-from control.request_list import CREATE_USER, GET_USER, CHANGE_USER,LOGIN_USER
-from model.model import ListaUsers
+from control.request_list import CREATE_USER, GET_USER, CHANGE_USER,LOGIN_USER, CREATE_ITEM, GET_ITEM
+from model.model import ListaUsers, ListaItens
 
 
 class UserControl:
@@ -28,7 +28,7 @@ class UserControl:
         except ValidationError as err:
             return View.error(400, str(err))
         user = ListaUsers.get_user(args['id_user'])
-        result = [{'id_user': rst.id_user} for rst in user]
+        result = [{'id_user': rst.id_user, 'nome': rst.nome, 'email': rst.email} for rst in user]
         return View.success(result)
 
     @staticmethod
@@ -63,4 +63,24 @@ class UserControl:
         return View.success(result)
 
 
+class ItemControl:
+    @staticmethod
+    def create_item():
+        try:
+            args = parser.parse(CREATE_ITEM, request)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        item = ListaItens.create_item(args['nome'], args['material'], args['peso'], args['pontos'])
+        result = {'id_item': item.id_item, 'nome': item.nome, 'material': item.material}
+        return View.success(result)
 
+    @staticmethod
+    def get_item():
+        try:
+            args = parser.parse(GET_ITEM, request)
+            print(args)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        item = ListaItens.get_item(args['id_item'])
+        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material} for rst in item]
+        return View.success(result)

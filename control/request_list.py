@@ -40,3 +40,17 @@ CHANGE_USER = {
     'tipo_user': fields.Str(required=False),
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }
+
+CREATE_ITEM = {
+    'nome': fields.Str(required=True),
+    'material': fields.Str(required=True),
+    'peso': fields.Str(required=True),
+    'pontos': fields.Str(required=False),
+    # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
+}
+
+
+GET_ITEM = {
+    'id_item': fields.Str(required=True),
+    # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
+}

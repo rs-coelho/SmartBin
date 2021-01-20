@@ -5,7 +5,7 @@ from requests import get
 from flask import Flask, jsonify
 
 from control.view import View
-from control.control import UserControl
+from control.control import UserControl, ItemControl
 
 
 app = Flask(__name__)
@@ -47,6 +47,16 @@ def delete_user():
 @app.route('/change/user', methods=['POST'])
 def change_user():
     return UserControl.change_user()
+
+
+@app.route('/create/item', methods=['POST'])
+def create_item():
+    return ItemControl.create_item()
+
+
+@app.route('/get/item', methods=['GET'])
+def get_item():
+    return ItemControl.get_item()
 
 
 @app.route('/ts/feed', methods=['GET'])
