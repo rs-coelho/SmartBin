@@ -2,13 +2,16 @@
 
 
 from requests import get
-from flask import Flask, jsonify
+from flask import Flask
 
 from control.view import View
 from control.control import UserControl, ItemControl
-
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["JSON_SORT_KEYS"] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -19,6 +22,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 @app.route('/')
+@cross_origin()
 def main():
     return View.success('Bem vindx ao web-service da Lixeira Inteligente')
 
@@ -33,7 +37,7 @@ def get_user():
     return UserControl.get_user()
 
 
-@app.route('/login/user', methods=['GET'])
+@app.route('/login/user', methods=['POST'])
 def login_user():
     print('Request recevied')
     return UserControl.login_user()
@@ -57,6 +61,7 @@ def create_item():
 @app.route('/get/item', methods=['GET'])
 def get_item():
     return ItemControl.get_item()
+
 
 @app.route('/get/item/full', methods=['GET'])
 def get_full_item_list():

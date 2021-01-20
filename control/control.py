@@ -14,7 +14,7 @@ class UserControl:
             args = parser.parse(CREATE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.create_user(args['nome'], args['email'], args['password'], args['pontos'], args['tipo_user'])
+        user = ListaUsers.create_user(args['nome'], args['email'], args['password'])
         if user == 0:
             return View.error(405, 'email already in use')
         result = {'id_user': user.id_user, 'nome': user.nome, 'email': user.email}
@@ -35,10 +35,9 @@ class UserControl:
     def login_user():
         try:
             args = parser.parse(LOGIN_USER, request)
-            print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.login_user(args['email'],args['password'])
+        user = ListaUsers.login_user(args['email'], args['password'])
         result = [{'id_user': rst.id_user, 'email': rst.email} for rst in user]
         return View.success(result)
 

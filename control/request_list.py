@@ -13,7 +13,7 @@ CREATE_USER = {
     'email': fields.Str(required=True),
     'password': fields.Str(required=True),
     'pontos': fields.Str(required=False),
-    'tipo_user': fields.Str(required=True),
+    'tipo_user': fields.Str(required=False),
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }
 
