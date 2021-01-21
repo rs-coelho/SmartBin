@@ -61,7 +61,7 @@ class ListaLixeiras(Base):
         # chercher l'implementation pur changer quelque chose oú DB
 
         list_size = len(db_session.query(ListaLixeiras).all())
-        item = ListaItens()
+        item = ListaLixeiras()
         item.id_lixeira = list_size + 1
         item.enderesso_fisico = enderesso_fisico
         item.capacidade = capacidade

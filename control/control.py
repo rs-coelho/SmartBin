@@ -104,7 +104,7 @@ class LixeiraControl:
         except ValidationError as err:
             return View.error(400, str(err))
         lixeira = ListaLixeiras.create_lixeira(args['enderesso_fisico'], args['capacidade'], args['status'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'enderesso_fisico': lixeira[0].enderesso_fisico, 'capacidade': lixeira[0].capacidade}
+        result = {'id_lixeira': lixeira.id_lixeira, 'enderesso_fisico': lixeira.enderesso_fisico, 'capacidade': lixeira.capacidade}
         return View.success(result)
 
     @staticmethod
