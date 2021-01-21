@@ -86,7 +86,7 @@ def get_lixeiera_capacidade():
     return LixeiraControl.get_lixeiera_capacidade()
 
 
-@app.route('/update/lixeira/capacidade', methods=['UPDATE'])
+@app.route('/update/lixeira/capacidade', methods=['POST'])
 def update_lixeiera_capacidade():
     return LixeiraControl.update_lixeiera_capacidade()
 # ===============================================================

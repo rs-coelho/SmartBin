@@ -83,7 +83,7 @@ class ListaLixeiras(Base):
     @staticmethod
     def update_lixeiera_capacidade(id_lixeira,capacidade):
         lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
-        lixeira.capacidade = capacidade
+        lixeira[0].capacidade = capacidade
         db_session.commit()
         return lixeira
 
