@@ -56,6 +56,38 @@ class ListaLixeiras(Base):
         self.capacidade = 100
         self.status = 0
 
+    @staticmethod
+    def create_lixeira(enderesso_fisico=None, capacidade=0, status=0):
+        # chercher l'implementation pur changer quelque chose oú DB
+
+        list_size = len(db_session.query(ListaLixeiras).all())
+        item = ListaItens()
+        item.id_lixeira = list_size + 1
+        item.enderesso_fisico = enderesso_fisico
+        item.capacidade = capacidade
+        item.status = status
+        db_session.add(item)
+        db_session.commit()
+        return item
+
+    @staticmethod
+    def get_lixeira(id_lixeira):
+        lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
+        return lixeira
+
+    @staticmethod
+    def get_lixeiera_capacidade(id_lixeira):
+        lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
+        return lixeira
+
+    @staticmethod
+    def update_lixeiera_capacidade(id_lixeira,capacidade):
+        lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
+        lixeira.capacidade = capacidade
+        db_session.commit()
+        return lixeira
+
+
 
 class ListaItens(Base):
     __tablename__ = 'lista_itens'

@@ -41,6 +41,8 @@ CHANGE_USER = {
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }
 
+# ===============================================================================
+
 CREATE_ITEM = {
     'nome': fields.Str(required=True),
     'material': fields.Str(required=True),
@@ -52,5 +54,27 @@ CREATE_ITEM = {
 
 GET_ITEM = {
     'id_item': fields.Str(required=True),
+    # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
+}
+
+# ===============================================================================
+
+CREATE_LIXEIRA = {
+    'enderesso_fisico': fields.Str(required=True),
+    'capacidade': fields.Str(required=False),
+    'status': fields.Str(required=False),
+    # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
+}
+
+
+GET_LIXEIRA = {
+    'id_lixeira': fields.Str(required=True),
+    # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
+}
+
+
+UPDATE_LIXEIRA_CAPACIDADE = {
+    'id_lixeira': fields.Str(required=True),
+    'capacidade': fields.Str(required=True),
     # 'acess_token': fields.Str(required=True, validate=validate_access_token_master_level),
 }

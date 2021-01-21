@@ -5,7 +5,7 @@ from requests import get
 from flask import Flask
 
 from control.view import View
-from control.control import UserControl, ItemControl
+from control.control import UserControl, ItemControl, LixeiraControl
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -25,6 +25,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 @cross_origin()
 def main():
     return View.success('Bem vindx ao web-service da Lixeira Inteligente')
+# ===============================================================
 
 
 @app.route('/create/user', methods=['POST'])
@@ -51,6 +52,7 @@ def delete_user():
 @app.route('/change/user', methods=['POST'])
 def change_user():
     return UserControl.change_user()
+# ===============================================================
 
 
 @app.route('/create/item', methods=['POST'])
@@ -66,6 +68,28 @@ def get_item():
 @app.route('/get/item/full', methods=['GET'])
 def get_full_item_list():
     return ItemControl.get_full_item_list()
+# ===============================================================
+
+
+@app.route('/create/lixeira', methods=['POST'])
+def create_lixeira():
+    return LixeiraControl.create_lixeira()
+
+
+@app.route('/get/lixeira', methods=['GET'])
+def get_lixeira():
+    return LixeiraControl.get_lixeira()
+
+
+@app.route('/get/lixeira/capacidade', methods=['GET'])
+def get_lixeiera_capacidade():
+    return LixeiraControl.get_lixeiera_capacidade()
+
+
+@app.route('/update/lixeira/capacidade', methods=['UPDATE'])
+def update_lixeiera_capacidade():
+    return LixeiraControl.update_lixeiera_capacidade()
+# ===============================================================
 
 
 @app.route('/ts/feed', methods=['GET'])
