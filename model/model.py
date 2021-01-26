@@ -88,7 +88,6 @@ class ListaLixeiras(Base):
         return lixeira
 
 
-
 class ListaItens(Base):
     __tablename__ = 'lista_itens'
     __table_args__ = {'schema': schema_name}
@@ -157,9 +156,7 @@ class ListaUsers(Base):
 
         list_size = len(db_session.query(ListaUsers).all())
         email_list = db_session.query(ListaUsers.email).all()
-        print(email_list)
-        if email in email_list[:][1]:
-            print('Bad')
+        if (email,) in email_list:
             return 0
         user = ListaUsers()
         user.id_user = list_size + 1
@@ -184,9 +181,17 @@ class ListaUsers(Base):
         return user
 
     @staticmethod
+    def update_user_pontos(id_user, pontos):
+        user = db_session.query(ListaLixeiras).filter_by(id_user=id_user).all()
+        user[0].pontos = pontos
+        db_session.commit()
+        return user
+
+    @staticmethod
     def delete_user(id_user):
         # https://stackoverflow.com/questions/27158573/how-to-delete-a-record-by-id-in-flask-sqlalchemy
         user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user).delete()
+        db_session.commit()
         return user
 
     @staticmethod
@@ -203,6 +208,7 @@ class ListaUsers(Base):
         return user
 
 
+# Enumerator
 class TipoUser(Base):
     __tablename__ = 'tipo_user'
     __table_args__ = {'schema': schema_name}
@@ -211,7 +217,7 @@ class TipoUser(Base):
     nome = Column(String(15), nullable=False)
 
     def __init__(self):
-       self.tipo_user = 'CL'  # CO/A
+       self.tipo_user = 'CL'  # CO/AD
        self.nome = 'client'  # colector/admin
 
 
@@ -222,8 +228,34 @@ class InventarioItens(Base):
     id_lixeira = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_lixeiras.id_lixeira'), primary_key=True)
     id_item = Column(String(12), ForeignKey(schema_name + '.lista_itens.id_item'), nullable=False)
     id_user = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_users.id_user'), nullable=False)
+    colected = Column(INTEGER(unsigned=True), nullable=False)
 
     def __init__(self):
         self.id_lixeira = 1
         self.id_item = '123456789'
         self.id_user = 1234
+        self.colected = 0
+
+    @staticmethod
+    def get_items_from_user(id_user):
+        items = db_session.query(InventarioItens).filter_by(id_user=id_user).all()
+        return items
+
+    @staticmethod
+    def insert_item_from_user(id_user, id_lixeira, id_item):
+        item = InventarioItens()
+        item.id_user = id_user
+        item.id_lixeira = id_lixeira
+        item.id_item = id_item
+        db_session.add(item)
+        db_session.commit()
+        return item
+
+    @staticmethod
+    def empty_trash(id_lixeira):
+        items = db_session.query(InventarioItens).filter_by(id_lixeira=id_lixeira).all()
+        for item in items:
+            if item.colected == 0:
+                item.colected = 1
+        db_session.commit()
+        return items
