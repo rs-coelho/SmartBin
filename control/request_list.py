@@ -8,6 +8,11 @@ def validate_access_token_master_level(access_token):
     # if user_label not in ('admin', 'master'):
     #    raise ValidationError(GIVEN_USER_HAS_NOT_THE_REQUIRED_LEVEL)
 
+TOKEN_AUTH = {
+    'token': fields.Str(required=True)
+}
+
+
 CREATE_USER = {
     'nome': fields.Str(required=True),
     'email': fields.Str(required=True),

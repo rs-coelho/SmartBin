@@ -5,6 +5,8 @@ from sqlalchemy import Column, ForeignKey, Date, Time, String, DateTime, DECIMAL
     ForeignKeyConstraint, Index, create_engine, MetaData, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.dialects.mysql import INTEGER
+from datetime import datetime
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 from model.DB_Build import Base, schema_name
 
@@ -18,8 +20,7 @@ metadata = MetaData(bind=engine)
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 db_session.configure(bind=engine)
 
-
-# Foram criados init apenas para visualização do que estará, essas funções não serão utilizadas
+# Foram criados init apenas para visualização da composição das tavelas e essas funções não serão utilizadas
 
 
 class ListaHubs(Base):
@@ -81,7 +82,7 @@ class ListaLixeiras(Base):
         return lixeira
 
     @staticmethod
-    def update_lixeiera_capacidade(id_lixeira,capacidade):
+    def update_lixeiera_capacidade(id_lixeira, capacidade):
         lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
         lixeira[0].capacidade = capacidade
         db_session.commit()
@@ -99,11 +100,11 @@ class ListaItens(Base):
     pontos = Column(INTEGER(unsigned=True), nullable=False)
 
     def __init__(self):
-       self.id_item = '123456789'
-       self.nome = 'nome produto'
-       self.material = 'ME'  # PL/PA 'metal/plastico/papel'
-       self.peso = 0
-       self.pontos = 10
+        self.id_item = '123456789'
+        self.nome = 'nome produto'
+        self.material = 'ME'  # PL/PA 'metal/plastico/papel'
+        self.peso = 0
+        self.pontos = 10
 
     @staticmethod
     def create_item(nome=None, material=None, peso=None, pontos=0):
@@ -116,7 +117,7 @@ class ListaItens(Base):
         item.material = material
         item.peso = peso
         item.pontos = pontos
-        print(item.nome,item.material,item.peso)
+        print(item.nome, item.material, item.peso)
         db_session.add(item)
         db_session.commit()
         return item
@@ -138,7 +139,7 @@ class ListaUsers(Base):
     id_user = Column(INTEGER(unsigned=True), primary_key=True)
     nome = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
-    password = Column(String(30), nullable=False)
+    password = Column(String(80), nullable=False)
     pontos = Column(INTEGER(unsigned=True), nullable=False)
     tipo_user = Column(String(2), nullable=False)
 
@@ -162,7 +163,8 @@ class ListaUsers(Base):
         user.id_user = list_size + 1
         user.nome = nome
         user.email = email
-        user.password = password
+        user.password = generate_password_hash(password)
+        print(user.password)
         user.pontos = pontos
         user.tipo_user = tipo_user
         db_session.add(user)
@@ -175,10 +177,13 @@ class ListaUsers(Base):
         return user
 
     @staticmethod
-    def login_user(email,password):
-        filter = [ListaUsers.email == email, ListaUsers.password == password,]
-        user = db_session.query(ListaUsers).filter(and_(*filter)).all()
-        return user
+    def login_user(email, password):
+        filter_ = [ListaUsers.email == email, ]
+        user = db_session.query(ListaUsers).filter(and_(*filter_)).first()
+        authorization = check_password_hash(user.password, password)
+        if authorization:
+            return user
+        return False
 
     @staticmethod
     def update_user_pontos(id_user, pontos):
@@ -217,15 +222,16 @@ class TipoUser(Base):
     nome = Column(String(15), nullable=False)
 
     def __init__(self):
-       self.tipo_user = 'CL'  # CO/AD
-       self.nome = 'client'  # colector/admin
+        self.tipo_user = 'CL'  # CO/AD
+        self.nome = 'client'  # colector/admin
 
 
 class InventarioItens(Base):
     __tablename__ = 'inventario_itens'
     __table_args__ = {'schema': schema_name}
 
-    id_lixeira = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_lixeiras.id_lixeira'), primary_key=True)
+    id_lixeira = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_lixeiras.id_lixeira'),
+                        primary_key=True)
     id_item = Column(String(12), ForeignKey(schema_name + '.lista_itens.id_item'), nullable=False)
     id_user = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_users.id_user'), nullable=False)
     colected = Column(INTEGER(unsigned=True), nullable=False)
@@ -259,3 +265,32 @@ class InventarioItens(Base):
                 item.colected = 1
         db_session.commit()
         return items
+
+
+class RequestLog(Base):
+    __tablename__ = 'request_log'
+    __table_args__ = {'schema': schema_name}
+
+    request = Column(String(50), primary_key=True)
+    date = Column(DateTime, nullable=False)
+    status = Column(String(3), nullable=False)
+    data = Column(String(80), nullable=False)
+
+    def __init__(self):
+        self.request = 'First Entry'
+        self.date = datetime.now()
+        self.status = '200'
+        self.data = 'inset request data here'
+
+    @staticmethod
+    def insert_log(request_type, date, status, data):
+        request = RequestLog()
+        request.request = request_type
+        request.date = date
+        request.status = status
+        request.data = data
+        db_session.add(request)
+        db_session.commit()
+        return request
+
+    # Maybe implement a remove method, but I believe, that in this case, any removal should be done by SQL directly

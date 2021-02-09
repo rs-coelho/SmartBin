@@ -43,7 +43,7 @@ class View(object):
 
     @staticmethod
     def error(code, details, success=True):
-        messages = {400: 'Bad request', 404: 'Not found', 405: 'Not allowed', 409: 'Conflict', 500: 'Internal error'}
+        messages = {400: 'Bad request', 403: 'Missing/Wrong Token', 404: 'Not found', 405: 'Not allowed', 409: 'Conflict', 500: 'Internal error'}
         result = OrderedDict()
         result['success'] = success
         result['payload'] = OrderedDict()

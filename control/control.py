@@ -2,10 +2,38 @@ from control.view import View
 from webargs.flaskparser import parser
 from marshmallow import ValidationError
 from flask import request
+from jwt import decode, encode
+from datetime import datetime, timedelta
+from functools import wraps
 
-from control.request_list import CREATE_USER, GET_USER, CHANGE_USER,LOGIN_USER, CREATE_ITEM, GET_ITEM
+from control.request_list import TOKEN_AUTH
+from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM
 from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_LIXEIRA
 from model.model import ListaUsers, ListaItens, ListaLixeiras
+
+SECRET_KEY = 'HP75db9wOKAjIn2Ki9ZmSizEk0r6iiQJ'
+
+
+def token_verify(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+        # token = parser.parse(TOKEN_AUTH, request)
+
+        if not token:
+            return View.error(403, 'Missing Token')
+
+        try:
+            data = decode(token, SECRET_KEY)
+            print(data)
+
+        except:
+            return View.error(403, 'Invalid Token')
+
+        return f(*args, **kwargs)
+
+    return decorated
+
 
 
 class UserControl:
@@ -39,7 +67,11 @@ class UserControl:
         except ValidationError as err:
             return View.error(400, str(err))
         user = ListaUsers.login_user(args['email'], args['password'])
-        result = [{'id_user': rst.id_user, 'email': rst.email} for rst in user]
+        token = False
+        if user:
+            token = encode({'id_user': user.id_user, 'exp': datetime.utcnow() + timedelta(seconds=60)}, SECRET_KEY)
+            # 60 sec for test, 15 days in app
+        result = {'token': token, 'email': user.email}
         return View.success(result)
 
     @staticmethod
