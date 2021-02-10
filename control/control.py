@@ -17,15 +17,13 @@ SECRET_KEY = 'HP75db9wOKAjIn2Ki9ZmSizEk0r6iiQJ'
 def token_verify(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get('token')
-        # token = parser.parse(TOKEN_AUTH, request)
+        token = parser.parse(TOKEN_AUTH, request)
 
         if not token:
             return View.error(403, 'Missing Token')
 
         try:
-            data = decode(token, SECRET_KEY)
-            print(data)
+            data = decode(token['token'], SECRET_KEY)
 
         except:
             return View.error(403, 'Invalid Token')
@@ -33,7 +31,6 @@ def token_verify(f):
         return f(*args, **kwargs)
 
     return decorated
-
 
 
 class UserControl:
@@ -80,7 +77,7 @@ class UserControl:
             args = parser.parse(GET_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.delete_user(GET_USER)
+        user = ListaUsers.delete_user(args['id_user'])
         result = [{'id_user': rst[0]} for rst in user]
         return View.success(result)
 
@@ -90,7 +87,8 @@ class UserControl:
             args = parser.parse(CHANGE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.change_user(CHANGE_USER)
+        user = ListaUsers.change_user(args['id_user'], args['nome'], args['email'], args['password'],
+                                      args['pontos'], args['tipo_user'])
         result = [{'id_user': rst[0]} for rst in user]
         return View.success(result)
 

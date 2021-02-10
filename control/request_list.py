@@ -9,7 +9,7 @@ def validate_access_token_master_level(access_token):
     #    raise ValidationError(GIVEN_USER_HAS_NOT_THE_REQUIRED_LEVEL)
 
 TOKEN_AUTH = {
-    'token': fields.Str(required=True)
+    'token': fields.Str(required=True),
 }
 
 
