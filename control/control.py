@@ -33,6 +33,27 @@ def token_verify(f):
     return decorated
 
 
+def token_verify_admin(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = parser.parse(TOKEN_AUTH, request)
+
+        if not token:
+            return View.error(403, 'Missing Token')
+
+        try:
+            data = decode(token['token'], SECRET_KEY)
+            if ListaUsers.get_user_type(data['id_user']) == 'AD':
+                return f(*args, **kwargs)
+
+        except:
+            return View.error(403, 'Invalid Token')
+
+        return False
+
+    return decorated
+
+
 class UserControl:
     @staticmethod
     def create_user():
@@ -66,7 +87,7 @@ class UserControl:
         user = ListaUsers.login_user(args['email'], args['password'])
         token = False
         if user:
-            token = encode({'id_user': user.id_user, 'exp': datetime.utcnow() + timedelta(seconds=60)}, SECRET_KEY)
+            token = encode({'id_user': user.id_user, 'exp': datetime.utcnow() + timedelta(days=2)}, SECRET_KEY)
             # 60 sec for test, 15 days in app
         result = {'token': token, 'email': user.email}
         return View.success(result)

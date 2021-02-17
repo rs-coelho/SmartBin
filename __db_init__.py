@@ -1,13 +1,11 @@
-
 from model.DB_Build import DBBuild
 from model.model import *
-from control.control import UserControl
 
 
 if __name__ == '__main__':
     # c = DBBuild()
     # c.createbase()
-    RequestLog.insert_log('CS',datetime.now(),'200','sdfggdfgdfgdfgdfgf')
+    # RequestLog.insert_log('CS', datetime.now(), '200', 'sdfggdfgdfgdfgdfgf')
 
     '''c.insertorm(ListaLixeiras())
     c.insertorm(ListaItens())

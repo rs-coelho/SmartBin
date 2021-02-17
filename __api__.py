@@ -3,7 +3,7 @@
 from flask import Flask
 
 from control.view import View
-from control.control import UserControl, ItemControl, LixeiraControl, SECRET_KEY, token_verify
+from control.control import UserControl, ItemControl, LixeiraControl, SECRET_KEY, token_verify, token_verify_admin
 from flask_cors import CORS, cross_origin
 from flask_bcrypt import Bcrypt
 
@@ -53,10 +53,9 @@ def change_user():
     return UserControl.change_user()
 # ===============================================================
 
-# Create a token Verify Admin
-
 
 @app.route('/create/item', methods=['POST'])  # Admin
+@token_verify_admin
 def create_item():
     return ItemControl.create_item()
 
@@ -75,6 +74,7 @@ def get_full_item_list():
 
 
 @app.route('/create/lixeira', methods=['POST'])  # Admin
+@token_verify_admin
 def create_lixeira():
     return LixeiraControl.create_lixeira()
 
@@ -92,6 +92,7 @@ def get_lixeiera_capacidade():
 
 
 @app.route('/update/lixeira/capacidade', methods=['POST'])  # Admin
+@token_verify_admin
 def update_lixeiera_capacidade():
     return LixeiraControl.update_lixeiera_capacidade()
 # ===============================================================

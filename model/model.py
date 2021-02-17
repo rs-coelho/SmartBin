@@ -164,7 +164,6 @@ class ListaUsers(Base):
         user.nome = nome
         user.email = email
         user.password = generate_password_hash(password)
-        print(user.password)
         user.pontos = pontos
         user.tipo_user = tipo_user
         db_session.add(user)
@@ -175,6 +174,11 @@ class ListaUsers(Base):
     def get_user(id_user):
         user = db_session.query(ListaUsers).filter_by(id_user=id_user).all()
         return user
+
+    @staticmethod
+    def get_user_type(id_user):
+        user = db_session.query(ListaUsers).filter_by(id_user=id_user).first()
+        return user.tipo_user
 
     @staticmethod
     def login_user(email, password):
