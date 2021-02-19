@@ -24,3 +24,86 @@ Obs: Later a .json will be added containing all the routes that are contemplated
  - pymysql
  - sqlachemy
  - webargs
+
+## API Routes
+This API only works with 'Content-type' = "application/json", and that is to send all requests via text/json
+### User
+
+[POST] - /create/user
+
+    "nome": "John Doe",
+    "email": "johndoe@email.com",
+    "password": "johnDpass"
+
+
+[GET] - /get/user
+
+    "id_user": 16
+
+
+[POST] - /login/user
+
+    "email": "johndoe@email.com",
+    "password": "johnDpass"
+
+
+[DELETE] - /delete/user
+    
+    "id_user": 16
+
+[POST] - /change/user
+
+    "id_user": 16
+    "nome": "John Doe",
+    "email": "johndoe@email.com",
+    "password": "johnDpass"
+    "pontos": 4059
+    "tipo_user": "CL"
+
+-------------------------------------------
+### Itens
+
+[POST] - /create/item  # Admin
+
+
+    "nome": "Veja Mult"
+    "material": "PL"
+    "peso": 0.100
+    "pontos": 35
+
+
+
+[GET] - /get/item
+
+    "id_item": 584557
+
+
+[GET] - /get/item/full
+
+     '''''Empty'''''''
+
+
+-------------------------------------------
+#### Lixeira 
+
+[POST] - /create/lixeira
+
+    "endereco_fisico": Av. Ficticia 36
+    "capacidade": 50
+    "status": 0
+
+
+[GET] - /get/lixeira
+
+    "id_lixeira": 12
+
+
+[GET] - /get/lixeira/capacidade
+
+    "id_lixeira": 12
+
+
+[POST] - /update/lixeira/capacidade  # Admin
+
+    "id_lixeira": 12
+    "capacidade": 50
