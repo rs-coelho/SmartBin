@@ -35,24 +35,24 @@ This API only works with 'Content-type' = "application/json", and that is to sen
     "email": "johndoe@email.com",
     "password": "johnDpass"
 
-
 [GET] - /get/user
 
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_user": 16
-
 
 [POST] - /login/user
 
     "email": "johndoe@email.com",
     "password": "johnDpass"
 
-
 [DELETE] - /delete/user
-    
+
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_user": 16
 
 [POST] - /change/user
 
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_user": 16
     "nome": "John Doe",
     "email": "johndoe@email.com",
@@ -65,45 +65,63 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 
 [POST] - /create/item  # Admin
 
-
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "nome": "Veja Mult"
     "material": "PL"
     "peso": 0.100
     "pontos": 35
 
-
-
 [GET] - /get/item
 
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_item": 584557
-
 
 [GET] - /get/item/full
 
-     '''''Empty'''''''
-
+     "token": "TOKEN_RETURNED_BY_LOGIN"
 
 -------------------------------------------
-#### Lixeira 
+### Inventory
 
-[POST] - /create/lixeira
+[POST] - /insert/item/inventory 
 
-    "endereco_fisico": Av. Ficticia 36
+    "token": "TOKEN_RETURNED_BY_LOGIN"
+    "id_user": 16
+    "id_lixeira": 12
+    "id_item": 584557
+
+[GET] - /get/user/inventory
+    
+    "token": "TOKEN_RETURNED_BY_LOGIN"
+    "id_user": 16
+
+[POST] - /empty/lixeira
+
+    "token": "TOKEN_RETURNED_BY_LOGIN"
+     "id_lixeira": 12
+
+-------------------------------------------
+### Lixeira 
+
+[POST] - /create/lixeira #Admin
+
+    "token": "TOKEN_RETURNED_BY_LOGIN"
+    "endereco_fisico": "Av. Ficticia 36"
     "capacidade": 50
     "status": 0
 
-
 [GET] - /get/lixeira
 
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_lixeira": 12
-
 
 [GET] - /get/lixeira/capacidade
 
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_lixeira": 12
-
 
 [POST] - /update/lixeira/capacidade  # Admin
 
+    "token": "TOKEN_RETURNED_BY_LOGIN"
     "id_lixeira": 12
     "capacidade": 50

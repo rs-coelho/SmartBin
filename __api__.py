@@ -4,6 +4,7 @@ from flask import Flask
 
 from control.view import View
 from control.control import UserControl, ItemControl, LixeiraControl, SECRET_KEY, token_verify, token_verify_admin
+from control.control import InventarioControl
 from flask_cors import CORS, cross_origin
 from flask_bcrypt import Bcrypt
 
@@ -35,7 +36,7 @@ def get_user():
     return UserControl.get_user()
 
 
-@app.route('/login/user', methods=['POST'])
+@app.route('/login/user', methods=['GET'])
 def login_user():
     return UserControl.login_user()
 
@@ -70,6 +71,25 @@ def get_item():
 @token_verify
 def get_full_item_list():
     return ItemControl.get_full_item_list()
+# ===============================================================
+
+
+@app.route('/insert/item/inventory', methods=['POST'])  # Admin
+@token_verify_admin
+def create_item():
+    return InventarioControl.insert_item_from_user()
+
+
+@app.route('/get/user/inventory', methods=['GET'])
+@token_verify
+def get_item():
+    return InventarioControl.get_items_from_user()
+
+
+@app.route('/empty/lixeira', methods=['POST'])
+@token_verify
+def get_full_item_list():
+    return InventarioControl.empty_trash()
 # ===============================================================
 
 

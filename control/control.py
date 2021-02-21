@@ -9,7 +9,8 @@ from functools import wraps
 from control.request_list import TOKEN_AUTH
 from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM
 from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_LIXEIRA
-from model.model import ListaUsers, ListaItens, ListaLixeiras
+from control.request_list import CREATE_INV_ITEM
+from model.model import ListaUsers, ListaItens, ListaLixeiras, InventarioItens
 
 SECRET_KEY = 'HP75db9wOKAjIn2Ki9ZmSizEk0r6iiQJ'
 
@@ -144,6 +145,40 @@ class ItemControl:
             return View.error(400, str(err))
 
         result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material} for rst in item]
+        return View.success(result)
+
+
+class InventarioControl:
+    @staticmethod
+    def insert_item_from_user():
+        try:
+            args = parser.parse(CREATE_INV_ITEM, request)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        item = InventarioItens.insert_item_from_user(args['id_user'], args['id_lixeira'], args['id_item'])
+        result = {'id_user': item.id_user, 'id_lixeira': item.id_lixeira, 'id_item': item.id_item}
+        return View.success(result)
+
+    @staticmethod
+    def get_items_from_user():
+        try:
+            args = parser.parse(GET_USER, request)
+            print(args)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        item = InventarioItens.get_items_from_user(args['id_user'])
+        result = [{'id_item': rst.id_item, 'id_lixeira': rst.id_lixeira} for rst in item]
+        return View.success(result)
+
+    @staticmethod
+    def empty_trash():
+        try:
+            args = parser.parse(GET_LIXEIRA, request)
+            print(args)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        item = InventarioItens.empty_trash(args['id_lixeira'])
+        result = [{'id_item': rst.id_item, 'id_lixeira': rst.id_lixeira} for rst in item]
         return View.success(result)
 
 
