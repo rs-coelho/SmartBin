@@ -69,8 +69,8 @@ CREATE_INV_ITEM = {
 # ===============================================================================
 
 CREATE_LIXEIRA = {
-    'enderesso_fisico': fields.Str(required=True),
-    'capacidade': fields.Str(required=False),
+    'address': fields.Str(required=True),
+    'capacity': fields.Str(required=False),
     'status': fields.Str(required=False),
 }
 

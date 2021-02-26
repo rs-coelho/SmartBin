@@ -76,19 +76,19 @@ def get_full_item_list():
 
 @app.route('/insert/item/inventory', methods=['POST'])  # Admin
 @token_verify_admin
-def create_item():
+def insert_item_from_user():
     return InventarioControl.insert_item_from_user()
 
 
 @app.route('/get/user/inventory', methods=['GET'])
 @token_verify
-def get_item():
+def get_items_from_user():
     return InventarioControl.get_items_from_user()
 
 
 @app.route('/empty/lixeira', methods=['POST'])
 @token_verify
-def get_full_item_list():
+def empty_trash():
     return InventarioControl.empty_trash()
 # ===============================================================
 

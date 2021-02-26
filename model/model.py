@@ -46,26 +46,26 @@ class ListaLixeiras(Base):
     __table_args__ = {'schema': schema_name}
 
     id_lixeira = Column(INTEGER(unsigned=True), primary_key=True)
-    enderesso_fisico = Column(String(70), nullable=False)
+    address = Column(String(70), nullable=False)
     capacidade = Column(INTEGER(unsigned=True), nullable=False)
     status = Column(INTEGER(unsigned=True), nullable=False)
     # Não tem id do hab pois ele já está na tabela do hub jutamente com o id da lixeira
 
     def __init__(self):
         self.id_lixeira = 1
-        self.enderesso_fisico = ''
+        self.address = ''
         self.capacidade = 100
         self.status = 0
 
     @staticmethod
-    def create_lixeira(enderesso_fisico=None, capacidade=0, status=0):
+    def create_lixeira(address=None, capacity=0, status=0):
         # chercher l'implementation pur changer quelque chose oú DB
 
         list_size = len(db_session.query(ListaLixeiras).all())
         item = ListaLixeiras()
         item.id_lixeira = list_size + 1
-        item.enderesso_fisico = enderesso_fisico
-        item.capacidade = capacidade
+        item.address = address
+        item.capacity = capacity
         item.status = status
         db_session.add(item)
         db_session.commit()
@@ -82,9 +82,9 @@ class ListaLixeiras(Base):
         return lixeira
 
     @staticmethod
-    def update_lixeiera_capacidade(id_lixeira, capacidade):
+    def update_lixeiera_capacidade(id_lixeira, capacity):
         lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
-        lixeira[0].capacidade = capacidade
+        lixeira[0].capacity = capacity
         db_session.commit()
         return lixeira
 
