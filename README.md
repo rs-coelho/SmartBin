@@ -31,97 +31,127 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 
 [POST] - /create/user
 
-    "nome": "John Doe",
-    "email": "johndoe@email.com",
-    "password": "johnDpass"
+    {
+        "nome": "John Doe",
+        "email": "johndoe@email.com",
+        "password": "johnDpass"
+    }
 
 [GET] - /get/user
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_user": "16"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_user": "16"
+    }
 
 [POST] - /login/user
 
-    "email": "johndoe@email.com",
-    "password": "johnDpass"
+    {
+        "email": "johndoe@email.com",
+        "password": "johnDpass"
+    }
 
 [DELETE] - /delete/user
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_user": "16"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_user": "16"
+    }
 
 [POST] - /change/user
 
-    "token": "TOKEN_RETURNED_BY_LOGIN"
-    "id_user": "16"
-    "nome": "John Doe",
-    "email": "johndoe@email.com",
-    "password": "johnDpass",
-    "pontos": "4059",
-    "tipo_user": "CL"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN"
+        "id_user": "16"
+        "nome": "John Doe",
+        "email": "johndoe@email.com",
+        "password": "johnDpass",
+        "pontos": "4059",
+        "tipo_user": "CL"
+    }
 
 -------------------------------------------
 ### Itens
 
 [POST] - /create/item  # Admin
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "nome": "Veja Mult",
-    "material": "PL",
-    "peso": "0.100",
-    "pontos": "35"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "nome": "Veja Mult",
+        "material": "PL",
+        "peso": "0.100",
+        "pontos": "35"
+    }
 
 [GET] - /get/item
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_item": "584557"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_item": "584557"
+    }
 
 [GET] - /get/item/full
 
-     "token": "TOKEN_RETURNED_BY_LOGIN"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN"
+    }
 
 -------------------------------------------
 ### Inventory
 
 [POST] - /insert/item/inventory 
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_user": "16",
-    "id_lixeira": "12",
-    "id_item": "584557"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_user": "16",
+        "id_lixeira": "12",
+        "id_item": "584557"
+    }
 
 [GET] - /get/user/inventory
     
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_user": "16"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_user": "16"
+    }
 
 [POST] - /empty/lixeira
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-     "id_lixeira": "12"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+         "id_lixeira": "12"
+    }
 
 -------------------------------------------
 ### Lixeira 
 
 [POST] - /create/lixeira #Admin
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "endereco_fisico": "Av. Ficticia 36",
-    "capacidade": "50",
-    "status": "0"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "endereco_fisico": "Av. Ficticia 36",
+        "capacidade": "50",
+        "status": "0"
+    }
 
 [GET] - /get/lixeira
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_lixeira": "12"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_lixeira": "12"
+    }
 
 [GET] - /get/lixeira/capacidade
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_lixeira": "12"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_lixeira": "12"
+    }
 
 [POST] - /update/lixeira/capacidade  # Admin
 
-    "token": "TOKEN_RETURNED_BY_LOGIN",
-    "id_lixeira": "12",
-    "capacidade": "50"
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_lixeira": "12",
+        "capacidade": "50"
+    }
