@@ -1,3 +1,5 @@
+import configparser, os
+
 from control.view import View
 from webargs.flaskparser import parser
 from marshmallow import ValidationError
@@ -12,7 +14,10 @@ from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_
 from control.request_list import CREATE_INV_ITEM
 from model.model import ListaUsers, ListaItens, ListaLixeiras, InventarioItens
 
-SECRET_KEY = 'HP75db9wOKAjIn2Ki9ZmSizEk0r6iiQJ'
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(__file__), '../settings/settings.ini'))
+
+SECRET_KEY = config.get('SECRET', 'key')
 
 
 def token_verify(f):
@@ -43,9 +48,7 @@ def token_verify_admin(f):
             return View.error(403, 'Missing Token')
 
         data = decode(token['token'], SECRET_KEY)
-        print(ListaUsers.get_user_type(data['id_user']))
         if ListaUsers.get_user_type(data['id_user']) == 'AD':
-            print('ok')
             return f(*args, **kwargs)
 
         return View.error(403, 'Invalid Token')
