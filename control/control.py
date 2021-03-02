@@ -42,15 +42,13 @@ def token_verify_admin(f):
         if not token:
             return View.error(403, 'Missing Token')
 
-        try:
-            data = decode(token['token'], SECRET_KEY)
-            if ListaUsers.get_user_type(data['id_user']) == 'AD':
-                return f(*args, **kwargs)
+        data = decode(token['token'], SECRET_KEY)
+        print(ListaUsers.get_user_type(data['id_user']))
+        if ListaUsers.get_user_type(data['id_user']) == 'AD':
+            print('ok')
+            return f(*args, **kwargs)
 
-        except:
-            return View.error(403, 'Invalid Token')
-
-        return False
+        return View.error(403, 'Invalid Token')
 
     return decorated
 
@@ -190,7 +188,7 @@ class LixeiraControl:
         except ValidationError as err:
             return View.error(400, str(err))
         lixeira = ListaLixeiras.create_lixeira(args['address'], args['capacity'], args['status'])
-        result = {'id_lixeira': lixeira.id_lixeira, 'address': lixeira.address, 'capacity': lixeira.capacidade}
+        result = {'id_lixeira': lixeira.id_lixeira, 'address': lixeira.address, 'capacity': lixeira.capacity}
         return View.success(result)
 
     @staticmethod
@@ -212,7 +210,7 @@ class LixeiraControl:
         except ValidationError as err:
             return View.error(400, str(err))
         lixeira = ListaLixeiras.get_lixeiera_capacidade(args['id_lixeira'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacidade}
+        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity}
         return View.success(result)
 
     @staticmethod
@@ -221,6 +219,6 @@ class LixeiraControl:
             args = parser.parse(UPDATE_LIXEIRA_CAPACIDADE, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        lixeira = ListaLixeiras.update_lixeiera_capacidade(args['id_lixeira'], args['capacidade'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacidade': lixeira[0].capacidade}
+        lixeira = ListaLixeiras.update_lixeiera_capacidade(args['id_lixeira'], args['capacity'])
+        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity}
         return View.success(result)

@@ -47,14 +47,14 @@ class ListaLixeiras(Base):
 
     id_lixeira = Column(INTEGER(unsigned=True), primary_key=True)
     address = Column(String(70), nullable=False)
-    capacidade = Column(INTEGER(unsigned=True), nullable=False)
+    capacity = Column(INTEGER(unsigned=True), nullable=False)
     status = Column(INTEGER(unsigned=True), nullable=False)
     # Não tem id do hab pois ele já está na tabela do hub jutamente com o id da lixeira
 
     def __init__(self):
         self.id_lixeira = 1
         self.address = ''
-        self.capacidade = 100
+        self.capacity = 100
         self.status = 0
 
     @staticmethod
