@@ -132,4 +132,4 @@ dmypy.json
 # User secrets/tests
 /ngrok
 settings/
-.ini
+*.ini
