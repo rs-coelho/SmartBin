@@ -70,7 +70,7 @@ def get_item():
 
 @app.route('/post/item/img', methods=['POST'])
 @token_verify_admin
-def get_item():
+def upload_item_img():
     return ItemControl.upload_item_img()
 
 
