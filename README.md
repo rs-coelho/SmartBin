@@ -90,6 +90,14 @@ This API only works with 'Content-type' = "application/json", and that is to sen
         "id_item": "584557"
     }
 
+[POST] - /post/item/img
+
+    {
+        "token": "TOKEN_RETURNED_BY_LOGIN",
+        "id_item": "584557"
+        "img_base64": "LONG_x64_STRING"
+    }
+
 [GET] - /get/item/full
 
     {
