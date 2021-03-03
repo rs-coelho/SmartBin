@@ -3,7 +3,8 @@
 from flask import Flask
 
 from control.view import View
-from control.control import UserControl, ItemControl, LixeiraControl, SECRET_KEY, token_verify, token_verify_admin
+from control.control import UserControl, ItemControl, LixeiraControl, SECRET_KEY
+from control.control import token_verify_admin_or_lixeira, token_verify_admin, token_verify
 from control.control import InventarioControl
 from flask_cors import CORS, cross_origin
 from flask_bcrypt import Bcrypt
@@ -118,7 +119,7 @@ def get_lixeiera_capacidade():
 
 
 @app.route('/update/lixeira/capacidade', methods=['POST'])  # Admin
-@token_verify_admin
+@token_verify_admin_or_lixeira
 def update_lixeiera_capacidade():
     return LixeiraControl.update_lixeiera_capacidade()
 # ===============================================================

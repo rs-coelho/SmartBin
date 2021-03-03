@@ -56,6 +56,23 @@ def token_verify_admin(f):
     return decorated
 
 
+def token_verify_admin_or_lixeira(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = parser.parse(TOKEN_AUTH, request)
+
+        if not token:
+            return View.error(403, 'Missing Token')
+
+        data = decode(token['token'], SECRET_KEY)
+        if ListaUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
+            return f(*args, **kwargs)
+
+        return View.error(403, 'Invalid Token')
+
+    return decorated
+
+
 class UserControl:
     @staticmethod
     def create_user():
@@ -157,7 +174,8 @@ class ItemControl:
         except ValidationError as err:
             return View.error(400, str(err))
 
-        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material} for rst in item]
+        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material, 'img_base64': rst.img_base64}
+                  for rst in item]
         return View.success(result)
 
 
