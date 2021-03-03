@@ -50,6 +50,12 @@ GET_ITEM = {
 
 }
 
+UPLOAD_ITEM_IMG = {
+    'id_item': fields.Str(required=True),
+    'img_base64': fields.Str(required=True)
+
+}
+
 # ===============================================================================
 
 CREATE_INV_ITEM = {

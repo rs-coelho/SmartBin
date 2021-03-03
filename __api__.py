@@ -67,6 +67,12 @@ def get_item():
     return ItemControl.get_item()
 
 
+@app.route('/post/item/img', methods=['POST'])
+@token_verify_admin
+def get_item():
+    return ItemControl.upload_item_img()
+
+
 @app.route('/get/item/full', methods=['GET'])
 @token_verify
 def get_full_item_list():

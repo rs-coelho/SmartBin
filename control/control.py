@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 from control.request_list import TOKEN_AUTH
-from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM
+from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM, UPLOAD_ITEM_IMG
 from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_LIXEIRA
 from control.request_list import CREATE_INV_ITEM
 from model.model import ListaUsers, ListaItens, ListaLixeiras, InventarioItens
@@ -135,7 +135,19 @@ class ItemControl:
         except ValidationError as err:
             return View.error(400, str(err))
         item = ListaItens.get_item(args['id_item'])
-        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material} for rst in item]
+        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material, 'img_base64': rst.img_base64}
+                  for rst in item]
+        return View.success(result)
+
+    @staticmethod
+    def upload_item_img():
+        try:
+            args = parser.parse(UPLOAD_ITEM_IMG, request)
+            print(args)
+        except ValidationError as err:
+            return View.error(400, str(err))
+        item = ListaItens.upload_item_img(args['id_item'], args['img_base64'])
+        result = [{'id_item': rst.id_item, 'img_base64': rst.img_base64,} for rst in item]
         return View.success(result)
 
     @staticmethod

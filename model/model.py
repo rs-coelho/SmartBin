@@ -1,7 +1,7 @@
 import configparser
 import os
 
-from sqlalchemy import Column, ForeignKey, Date, Time, String, DateTime, DECIMAL, TIMESTAMP, BOOLEAN, \
+from sqlalchemy import Column, ForeignKey, Date, Time, Text, String, DateTime, DECIMAL, TIMESTAMP, BOOLEAN, \
     ForeignKeyConstraint, Index, create_engine, MetaData, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.dialects.mysql import INTEGER
@@ -98,6 +98,7 @@ class ListaItens(Base):
     material = Column(String(2), nullable=False)
     peso = Column(DECIMAL(4, 4), nullable=False)
     pontos = Column(INTEGER(unsigned=True), nullable=False)
+    img_base64 = Column(Text(100000), nullable=True)
 
     def __init__(self):
         self.id_item = '123456789'
@@ -105,6 +106,7 @@ class ListaItens(Base):
         self.material = 'ME'  # PL/PA 'metal/plastico/papel'
         self.peso = 0
         self.pontos = 10
+        self.img_base64 = ''
 
     @staticmethod
     def create_item(nome=None, material=None, peso=None, pontos=0):
@@ -117,6 +119,7 @@ class ListaItens(Base):
         item.material = material
         item.peso = peso
         item.pontos = pontos
+        item.img_base64 = None
         print(item.nome, item.material, item.peso)
         db_session.add(item)
         db_session.commit()
@@ -125,6 +128,13 @@ class ListaItens(Base):
     @staticmethod
     def get_item(id_item):
         item = db_session.query(ListaItens).filter_by(id_item=id_item).all()
+        return item
+
+    @staticmethod
+    def upload_item_img(id_item, img_base64):
+        item = db_session.query(ListaItens).filter_by(id_item=id_item).all()
+        item.img_base64 = img_base64
+        db_session.commit()
         return item
 
     @staticmethod
