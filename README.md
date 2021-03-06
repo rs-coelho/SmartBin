@@ -138,7 +138,7 @@ This API only works with 'Content-type' = "application/json", and that is to sen
     {
         "token": "TOKEN_RETURNED_BY_LOGIN",
         "endereco_fisico": "Av. Ficticia 36",
-        "capacidade": "50",
+        "capacity": "50",
         "status": "0"
     }
 
@@ -161,5 +161,5 @@ This API only works with 'Content-type' = "application/json", and that is to sen
     {
         "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_lixeira": "12",
-        "capacidade": "50"
+        "capacity": "50"
     }

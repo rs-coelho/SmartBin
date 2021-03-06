@@ -24,6 +24,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 def main():
     return View.success('Bem vindx ao web-service da Lixeira Inteligente')
 # ===============================================================
+# ===============           User List      ======================
 
 
 @app.route('/create/user', methods=['POST'])
@@ -54,6 +55,7 @@ def delete_user():  # First delete inventory then the user,
 def change_user():
     return UserControl.change_user()
 # ===============================================================
+# ===============           Item List      ======================
 
 
 @app.route('/create/item', methods=['POST'])  # Admin
@@ -79,6 +81,7 @@ def upload_item_img():
 def get_full_item_list():
     return ItemControl.get_full_item_list()
 # ===============================================================
+# ===============           Invertory      ======================
 
 
 @app.route('/insert/item/inventory', methods=['POST'])  # Admin
@@ -98,6 +101,7 @@ def get_items_from_user():
 def empty_trash():
     return InventarioControl.empty_trash()
 # ===============================================================
+# ===============           Bin List       ======================
 
 
 @app.route('/create/lixeira', methods=['POST'])  # Admin
@@ -115,7 +119,7 @@ def get_lixeira():
 @app.route('/get/lixeira/capacidade', methods=['GET'])
 @token_verify
 def get_lixeiera_capacidade():
-    return LixeiraControl.get_lixeiera_capacidade()
+    return LixeiraControl.get_lixeira_capacidade()
 
 
 @app.route('/update/lixeira/capacidade', methods=['POST'])  # Admin

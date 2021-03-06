@@ -236,13 +236,13 @@ class LixeiraControl:
         return View.success(result)
 
     @staticmethod
-    def get_lixeiera_capacidade():
+    def get_lixeira_capacidade():
         try:
             args = parser.parse(GET_LIXEIRA, request)
             print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        lixeira = ListaLixeiras.get_lixeiera_capacidade(args['id_lixeira'])
+        lixeira = ListaLixeiras.get_lixeira(args['id_lixeira'])
         result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity}
         return View.success(result)
 
@@ -253,5 +253,5 @@ class LixeiraControl:
         except ValidationError as err:
             return View.error(400, str(err))
         lixeira = ListaLixeiras.update_lixeiera_capacidade(args['id_lixeira'], args['capacity'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity}
+        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity, 'last_updated': lixeira[0].last_updated}
         return View.success(result)

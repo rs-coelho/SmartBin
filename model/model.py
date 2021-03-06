@@ -49,6 +49,7 @@ class ListaLixeiras(Base):
     address = Column(String(70), nullable=False)
     capacity = Column(INTEGER(unsigned=True), nullable=False)
     status = Column(INTEGER(unsigned=True), nullable=False)
+    last_updated = Column(DateTime, nullable=False)
     # Não tem id do hab pois ele já está na tabela do hub jutamente com o id da lixeira
 
     def __init__(self):
@@ -56,6 +57,7 @@ class ListaLixeiras(Base):
         self.address = ''
         self.capacity = 100
         self.status = 0
+        self.last_updated = datetime.now()
 
     @staticmethod
     def create_lixeira(address=None, capacity=0, status=0):
@@ -67,6 +69,7 @@ class ListaLixeiras(Base):
         item.address = address
         item.capacity = capacity
         item.status = status
+        item.last_updated = datetime.now()
         db_session.add(item)
         db_session.commit()
         return item
@@ -77,14 +80,10 @@ class ListaLixeiras(Base):
         return lixeira
 
     @staticmethod
-    def get_lixeiera_capacidade(id_lixeira):
-        lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
-        return lixeira
-
-    @staticmethod
     def update_lixeiera_capacidade(id_lixeira, capacity):
         lixeira = db_session.query(ListaLixeiras).filter_by(id_lixeira=id_lixeira).all()
         lixeira[0].capacity = capacity
+        lixeira[0].last_updated = datetime.now()
         db_session.commit()
         return lixeira
 
