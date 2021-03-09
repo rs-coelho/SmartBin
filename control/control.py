@@ -108,7 +108,9 @@ class UserControl:
         user = ListaUsers.login_user(args['email'], args['password'])
         token = False
         if user:
-            token = encode({'id_user': user.id_user, 'exp': datetime.utcnow() + timedelta(days=2)}, SECRET_KEY)
+            token = encode({'id_user': user.id_user, 'exp': datetime.utcnow() + timedelta(days=15)}, SECRET_KEY)
+        else:
+            return View.error(401, 'Access Denied, wrong authenticators')
             # 60 sec for test, 15 days in app
         result = {'token': token, 'email': user.email}
         return View.success(result)
@@ -166,7 +168,7 @@ class ItemControl:
         except ValidationError as err:
             return View.error(400, str(err))
         item = ListaItens.upload_item_img(args['id_item'], args['img_base64'])
-        result = [{'id_item': rst.id_item, 'img_base64': rst.img_base64,} for rst in item]
+        result = [{'id_item': rst.id_item, 'img_base64': rst.img_base64} for rst in item]
         return View.success(result)
 
     @staticmethod
