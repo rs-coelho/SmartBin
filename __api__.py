@@ -1,5 +1,3 @@
-# Inset Flask app Here
-
 from flask import Flask
 
 from control.view import View

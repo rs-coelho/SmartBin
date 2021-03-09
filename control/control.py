@@ -1,6 +1,4 @@
 import configparser, os
-
-from control.view import View
 from webargs.flaskparser import parser
 from marshmallow import ValidationError
 from flask import request
@@ -8,6 +6,7 @@ from jwt import decode, encode
 from datetime import datetime, timedelta
 from functools import wraps
 
+from control.view import View
 from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM, UPLOAD_ITEM_IMG
 from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_LIXEIRA
 from control.request_list import CREATE_INV_ITEM

@@ -1,8 +1,7 @@
 import configparser
 import os
 
-from sqlalchemy import Column, ForeignKey, Date, Time, Text, String, DateTime, DECIMAL, TIMESTAMP, BOOLEAN, \
-    ForeignKeyConstraint, Index, create_engine, MetaData, and_
+from sqlalchemy import Column, ForeignKey, Text, String, DateTime, DECIMAL, create_engine, MetaData, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
@@ -20,7 +19,7 @@ metadata = MetaData(bind=engine)
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 db_session.configure(bind=engine)
 
-# Foram criados init apenas para visualização da composição das tavelas e essas funções não serão utilizadas
+# The __init__ were created just as an example of a first add to the DB, those functions are not to be used
 
 
 class ListaHubs(Base):
@@ -50,7 +49,6 @@ class ListaLixeiras(Base):
     capacity = Column(INTEGER(unsigned=True), nullable=False)
     status = Column(INTEGER(unsigned=True), nullable=False)
     last_updated = Column(DateTime, nullable=False)
-    # Não tem id do hab pois ele já está na tabela do hub jutamente com o id da lixeira
 
     def __init__(self):
         self.id_lixeira = 1
