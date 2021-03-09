@@ -46,13 +46,13 @@ def token_verify_admin(f):
         token = request.headers
 
         if not token:
-            return View.error(403, 'Missing Token')
+            return View.error(401, 'Missing Token')
 
         data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
         if ListaUsers.get_user_type(data['id_user']) == 'AD':
             return f(*args, **kwargs)
 
-        return View.error(403, 'Invalid Token')
+        return View.error(401, 'Invalid Token')
 
     return decorated
 
@@ -64,13 +64,13 @@ def token_verify_admin_or_lixeira(f):
         token = request.headers
 
         if not token:
-            return View.error(403, 'Missing Token')
+            return View.error(401, 'Missing Token')
 
         data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
         if ListaUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
             return f(*args, **kwargs)
 
-        return View.error(403, 'Invalid Token')
+        return View.error(401, 'Invalid Token')
 
     return decorated
 
