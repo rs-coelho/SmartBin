@@ -37,32 +37,29 @@ This API only works with 'Content-type' = "application/json", and that is to sen
         "password": "johnDpass"
     }
 
-[GET] - /get/user
+[GET] - /get/user # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_user": "16"
     }
 
-[POST] - /login/user
+[POST] - /login/user 
 
     {
         "email": "johndoe@email.com",
         "password": "johnDpass"
     }
 
-[DELETE] - /delete/user
+[DELETE] - /delete/user # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_user": "16"
     }
 
-[POST] - /change/user
+[POST] - /change/user  # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN"
-        "id_user": "16"
+        "id_user": "16",
         "nome": "John Doe",
         "email": "johndoe@email.com",
         "password": "johnDpass",
@@ -73,32 +70,29 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 -------------------------------------------
 ### Itens
 
-[POST] - /create/item  # Admin
+[POST] - /create/item  # Admin Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "nome": "Veja Mult",
         "material": "PL",
         "peso": "0.100",
         "pontos": "35"
     }
 
-[GET] - /get/item
+[GET] - /get/item # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_item": "584557"
     }
 
-[POST] - /post/item/img
+[POST] - /post/item/img # Admin Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_item": "584557"
         "img_base64": "LONG_x64_STRING"
     }
 
-[GET] - /get/item/full
+[GET] - /get/item/full # Authorization Required
 
     {
         "token": "TOKEN_RETURNED_BY_LOGIN"
@@ -107,36 +101,32 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 -------------------------------------------
 ### Inventory
 
-[POST] - /insert/item/inventory 
+[POST] - /insert/item/inventory # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_user": "16",
         "id_lixeira": "12",
         "id_item": "584557"
     }
 
-[GET] - /get/user/inventory
+[GET] - /get/user/inventory # Authorization Required
     
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_user": "16"
     }
 
-[POST] - /empty/lixeira
+[POST] - /empty/lixeira # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
          "id_lixeira": "12"
     }
 
 -------------------------------------------
 ### Lixeira 
 
-[POST] - /create/lixeira #Admin
+[POST] - /create/lixeira #Admin Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "endereco_fisico": "Av. Ficticia 36",
         "capacity": "50",
         "status": "0"
@@ -145,21 +135,18 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 [GET] - /get/lixeira
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_lixeira": "12"
     }
 
-[GET] - /get/lixeira/capacidade
+[GET] - /get/lixeira/capacidade # Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_lixeira": "12"
     }
 
-[POST] - /update/lixeira/capacidade  # Admin
+[POST] - /update/lixeira/capacidade  # Admin or Bin Authorization Required
 
     {
-        "token": "TOKEN_RETURNED_BY_LOGIN",
         "id_lixeira": "12",
         "capacity": "50"
     }

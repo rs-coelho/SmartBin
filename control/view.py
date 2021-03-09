@@ -5,15 +5,6 @@ from collections import OrderedDict
 class View(object):
 
     @staticmethod
-    def success_without_data():
-        result = OrderedDict()
-        result['success'] = 'true'
-        result['payload'] = OrderedDict()
-        result['payload']['code'] = 200
-        result['payload']['message'] = 'SUCCESS'
-        return jsonify(result)
-
-    @staticmethod
     def success_with_message(message):
         result = OrderedDict()
         result['success'] = 'true'
@@ -43,15 +34,15 @@ class View(object):
 
     @staticmethod
     def error(code, details, success=True):
-        messages = {400: 'Bad request', 401: 'Token Problems', 404: 'Not found', 405: 'Not allowed', 409: 'Conflict', 500: 'Internal error'}
+        messages = {400: 'Bad request', 401: 'Authorization Token Problems', 404: 'Not found', 405: 'Not allowed',
+                    409: 'Conflict', 500: 'Internal error'}
         result = OrderedDict()
         result['success'] = success
         result['payload'] = OrderedDict()
         result['payload']['error'] = OrderedDict()
-        result['payload']['error']['code'] = code
         result['payload']['error']['message'] = messages[code]
         result['payload']['error']['details'] = details
-        return jsonify(result)
+        return jsonify(result), code
 
     @staticmethod
     def authorization_error():

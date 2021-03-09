@@ -1,7 +1,10 @@
 from marshmallow import fields
 
+
+# Not in utilization, because this is a list to get the token from the body
+# This version is getting the Auth Token from the request Headers
 TOKEN_AUTH = {
-    'token': fields.Str(required=True),
+    'Authorization': fields.Str(required=True),
 }
 
 

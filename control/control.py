@@ -8,7 +8,6 @@ from jwt import decode, encode
 from datetime import datetime, timedelta
 from functools import wraps
 
-from control.request_list import TOKEN_AUTH
 from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM, UPLOAD_ITEM_IMG
 from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_LIXEIRA
 from control.request_list import CREATE_INV_ITEM
@@ -23,16 +22,17 @@ SECRET_KEY = config.get('SECRET', 'key')
 def token_verify(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = parser.parse(TOKEN_AUTH, request)
+        # token = parser.parse(TOKEN_AUTH, request)
+        token = request.headers
 
         if not token:
-            return View.error(403, 'Missing Token')
+            return View.error(401, 'Missing Token')
 
         try:
-            data = decode(token['token'], SECRET_KEY)
+            data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
 
         except:
-            return View.error(403, 'Invalid Token')
+            return View.error(401, 'Invalid Token')
 
         return f(*args, **kwargs)
 
@@ -42,12 +42,13 @@ def token_verify(f):
 def token_verify_admin(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = parser.parse(TOKEN_AUTH, request)
+        # token = parser.parse(TOKEN_AUTH, request)
+        token = request.headers
 
         if not token:
             return View.error(403, 'Missing Token')
 
-        data = decode(token['token'], SECRET_KEY)
+        data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
         if ListaUsers.get_user_type(data['id_user']) == 'AD':
             return f(*args, **kwargs)
 
@@ -59,12 +60,13 @@ def token_verify_admin(f):
 def token_verify_admin_or_lixeira(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = parser.parse(TOKEN_AUTH, request)
+        # token = parser.parse(TOKEN_AUTH, request)
+        token = request.headers
 
         if not token:
             return View.error(403, 'Missing Token')
 
-        data = decode(token['token'], SECRET_KEY)
+        data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
         if ListaUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
             return f(*args, **kwargs)
 
