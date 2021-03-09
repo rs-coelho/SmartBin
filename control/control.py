@@ -91,7 +91,6 @@ class UserControl:
     def get_user():
         try:
             args = parser.parse(GET_USER, request)
-            print(args)
         except ValidationError as err:
             return View.error(400, str(err))
         user = ListaUsers.get_user(args['id_user'])
@@ -163,7 +162,6 @@ class ItemControl:
     def upload_item_img():
         try:
             args = parser.parse(UPLOAD_ITEM_IMG, request)
-            print(args)
         except ValidationError as err:
             return View.error(400, str(err))
         item = ListaItens.upload_item_img(args['id_item'], args['img_base64'])
@@ -197,7 +195,6 @@ class InventarioControl:
     def get_items_from_user():
         try:
             args = parser.parse(GET_USER, request)
-            print(args)
         except ValidationError as err:
             return View.error(400, str(err))
         item = InventarioItens.get_items_from_user(args['id_user'])
@@ -208,7 +205,7 @@ class InventarioControl:
     def empty_trash():
         try:
             args = parser.parse(GET_LIXEIRA, request)
-            print(args)
+            print(args, 'This bin should be empty')
         except ValidationError as err:
             return View.error(400, str(err))
         item = InventarioItens.empty_trash(args['id_lixeira'])
@@ -235,6 +232,8 @@ class LixeiraControl:
         except ValidationError as err:
             return View.error(400, str(err))
         lixeira = ListaLixeiras.get_lixeira(args['id_lixeira'])
+        if not lixeira:
+            return View.error(404, 'Bin not found')
         result = {'id_lixeira': lixeira[0].id_lixeira, 'address': lixeira[0].address}
         return View.success(result)
 
