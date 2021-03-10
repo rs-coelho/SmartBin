@@ -130,9 +130,9 @@ class ListaItens(Base):
     @staticmethod
     def upload_item_img(id_item, img_base64):
         item = db_session.query(ListaItens).filter_by(id_item=id_item).all()
-        item.img_base64 = img_base64
+        item[0].img_base64 = img_base64
         db_session.commit()
-        return item
+        return item[0]
 
     @staticmethod
     def get_full_item_list():

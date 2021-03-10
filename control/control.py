@@ -165,7 +165,7 @@ class ItemControl:
         except ValidationError as err:
             return View.error(400, str(err))
         item = ListaItens.upload_item_img(args['id_item'], args['img_base64'])
-        result = [{'id_item': rst.id_item, 'img_base64': rst.img_base64} for rst in item]
+        result = {'id_item': item.id_item, 'img_base64': item.img_base64}
         return View.success(result)
 
     @staticmethod

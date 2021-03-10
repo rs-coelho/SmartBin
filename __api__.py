@@ -25,30 +25,30 @@ def main():
 # ===============           User List      ======================
 
 
-@app.route('/create/user', methods=['POST'])
+@app.route('/create/user', methods=['POST'])  # ok
 def create_user():
     return UserControl.create_user()
 
 
-@app.route('/get/user', methods=['GET'])
+@app.route('/get/user', methods=['GET'])  # ok
 @token_verify
 def get_user():
     return UserControl.get_user()
 
 
-@app.route('/login/user', methods=['GET'])
+@app.route('/login/user', methods=['GET'])  # ok
 def login_user():
     return UserControl.login_user()
 
 
-@app.route('/delete/user', methods=['DELETE'])
+@app.route('/delete/user', methods=['DELETE'])  # needs adjusts
 @token_verify
 def delete_user():  # First delete inventory then the user,
     # alert the user that they will lose all their records
     return UserControl.delete_user()
 
 
-@app.route('/change/user', methods=['POST'])
+@app.route('/change/user', methods=['POST'])  # needs adjusts
 @token_verify
 def change_user():
     return UserControl.change_user()
@@ -56,25 +56,25 @@ def change_user():
 # ===============           Item List      ======================
 
 
-@app.route('/create/item', methods=['POST'])  # Admin
+@app.route('/create/item', methods=['POST'])  # Admin ok
 @token_verify_admin
 def create_item():
     return ItemControl.create_item()
 
 
-@app.route('/get/item', methods=['GET'])
+@app.route('/get/item', methods=['GET'])  # ok
 @token_verify
 def get_item():
     return ItemControl.get_item()
 
 
-@app.route('/post/item/img', methods=['POST'])
+@app.route('/post/item/img', methods=['POST'])  # needs adjusts route and request ok, but DB does not save the img
 @token_verify_admin
 def upload_item_img():
     return ItemControl.upload_item_img()
 
 
-@app.route('/get/item/full', methods=['GET'])
+@app.route('/get/item/full', methods=['GET'])  # ok
 @token_verify
 def get_full_item_list():
     return ItemControl.get_full_item_list()
@@ -82,19 +82,19 @@ def get_full_item_list():
 # ===============           Invertory      ======================
 
 
-@app.route('/insert/item/inventory', methods=['POST'])  # Admin
+@app.route('/insert/item/inventory', methods=['POST'])  # Admin / needs ajust in AWS
 @token_verify_admin
 def insert_item_from_user():
     return InventarioControl.insert_item_from_user()
 
 
-@app.route('/get/user/inventory', methods=['GET'])
+@app.route('/get/user/inventory', methods=['GET'])  # ok
 @token_verify
 def get_items_from_user():
     return InventarioControl.get_items_from_user()
 
 
-@app.route('/empty/lixeira', methods=['POST'])
+@app.route('/empty/lixeira', methods=['POST'])  # works but needs ajusts
 @token_verify
 def empty_trash():
     return InventarioControl.empty_trash()
@@ -102,25 +102,25 @@ def empty_trash():
 # ===============           Bin List       ======================
 
 
-@app.route('/create/lixeira', methods=['POST'])  # Admin
+@app.route('/create/lixeira', methods=['POST'])  # Admin ok
 @token_verify_admin
 def create_lixeira():
     return LixeiraControl.create_lixeira()
 
 
-@app.route('/get/lixeira', methods=['GET'])
+@app.route('/get/lixeira', methods=['GET'])  # ok
 @token_verify
 def get_lixeira():
     return LixeiraControl.get_lixeira()
 
 
-@app.route('/get/lixeira/capacidade', methods=['GET'])
+@app.route('/get/lixeira/capacidade', methods=['GET'])  # ok
 @token_verify
 def get_lixeiera_capacidade():
     return LixeiraControl.get_lixeira_capacidade()
 
 
-@app.route('/update/lixeira/capacidade', methods=['POST'])  # Admin
+@app.route('/update/lixeira/capacidade', methods=['POST'])  # Admin ok
 @token_verify_admin_or_lixeira
 def update_lixeiera_capacidade():
     return LixeiraControl.update_lixeiera_capacidade()
