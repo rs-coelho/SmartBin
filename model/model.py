@@ -241,6 +241,7 @@ class InventarioItens(Base):
     __tablename__ = 'inventario_itens'
     __table_args__ = {'schema': schema_name}
 
+    id_inventory = Column(INTEGER(unsigned=True),primary_key=True)
     id_lixeira = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_lixeiras.id_lixeira'),
                         primary_key=True)
     id_item = Column(String(12), ForeignKey(schema_name + '.lista_itens.id_item'), nullable=False)
@@ -248,6 +249,7 @@ class InventarioItens(Base):
     colected = Column(INTEGER(unsigned=True), nullable=False)
 
     def __init__(self):
+        self.id_inventory = 0
         self.id_lixeira = 1
         self.id_item = '123456789'
         self.id_user = 1234
@@ -261,6 +263,7 @@ class InventarioItens(Base):
     @staticmethod
     def insert_item_from_user(id_user, id_lixeira, id_item):
         item = InventarioItens()
+        item.id_inventory = len(db_session.query(InventarioItens).all())
         item.id_user = id_user
         item.id_lixeira = id_lixeira
         item.id_item = id_item
