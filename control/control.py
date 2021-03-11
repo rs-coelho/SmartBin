@@ -30,8 +30,17 @@ def token_verify(f):
         try:
             data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
 
+
         except:
             return View.error(401, 'Invalid Token')
+
+        try:
+            get_user = parser.parse(GET_USER, request)['id_user']
+            if int(get_user) != int(data['id_user']):
+                return View.error(401, 'Unauthorized Access, wrong user')
+
+        except:
+            return f(*args, **kwargs)
 
         return f(*args, **kwargs)
 

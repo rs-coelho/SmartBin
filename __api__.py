@@ -82,8 +82,8 @@ def get_full_item_list():
 # ===============           Invertory      ======================
 
 
-@app.route('/insert/item/inventory', methods=['POST'])  # Admin / needs ajust in AWS
-@token_verify_admin
+@app.route('/insert/item/inventory', methods=['POST'])  # ok
+@token_verify
 def insert_item_from_user():
     return InventarioControl.insert_item_from_user()
 
