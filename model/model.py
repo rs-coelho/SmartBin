@@ -211,15 +211,17 @@ class ListaUsers(Base):
         return user
 
     @staticmethod
-    def change_user(id_user, nome=None, email=None, password=None, pontos=None, tipo_user=None):
+    def change_user(id_user, args,nome=None, email=None, password=None, pontos=None, tipo_user=None):
         # chercher l'implementation pur changer quelque chose oú DB
         # https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
-        user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user)
-        user.nome = nome if nome is not None else user.nome
-        user.email = email if email is not None else user.email
-        user.password = password if password is not None else user.password
-        user.nome = pontos if pontos is not None else user.pontos
-        user.nome = tipo_user if tipo_user is not None else user.tipo_user
+        user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user).first()
+        if 'nome' in args.keys():
+            user.nome = args['nome']
+        if 'email' in args.keys():
+            user.email = args['email']
+        if 'password' in args.keys():
+            passcode = args['password']
+            user.password = generate_password_hash(str(args['password']))
         db_session.commit()
         return user
 

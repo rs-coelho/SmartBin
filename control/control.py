@@ -129,8 +129,10 @@ class UserControl:
         except ValidationError as err:
             return View.error(400, str(err))
         user = ListaUsers.delete_user(args['id_user'])
-        result = [{'id_user': rst[0]} for rst in user]
-        return View.success(result)
+        if user:
+            return View.success('User Deleted')
+        else:
+            return View.error(404,'User Not Found')
 
     @staticmethod
     def change_user():
@@ -138,9 +140,8 @@ class UserControl:
             args = parser.parse(CHANGE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.change_user(args['id_user'], args['nome'], args['email'], args['password'],
-                                      args['pontos'], args['tipo_user'])
-        result = [{'id_user': rst[0]} for rst in user]
+        user = ListaUsers.change_user(args['id_user'], args)
+        result = {'id_user': user.id_user}
         return View.success(result)
 
 
