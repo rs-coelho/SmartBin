@@ -1,4 +1,5 @@
-import configparser, os
+import configparser
+import os
 from webargs.flaskparser import parser
 from marshmallow import ValidationError
 from flask import request
@@ -29,7 +30,6 @@ def token_verify(f):
 
         try:
             data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
-
 
         except:
             return View.error(401, 'Invalid Token')
@@ -185,7 +185,8 @@ class ItemControl:
         except ValidationError as err:
             return View.error(400, str(err))
 
-        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material, 'img_base64': rst.img_base64}
+        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material, 'points': rst.pontos,
+                   'img_base64': rst.img_base64}
                   for rst in item]
         return View.success(result)
 
@@ -265,5 +266,6 @@ class LixeiraControl:
         except ValidationError as err:
             return View.error(400, str(err))
         lixeira = ListaLixeiras.update_lixeiera_capacidade(args['id_lixeira'], args['capacity'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity, 'last_updated': lixeira[0].last_updated}
+        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity,
+                  'last_updated': lixeira[0].last_updated}
         return View.success(result)

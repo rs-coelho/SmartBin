@@ -33,8 +33,6 @@ CHANGE_USER = {
     'nome': fields.Str(required=False),
     'email': fields.Str(required=False),
     'password': fields.Str(required=False),
-    'pontos': fields.Str(required=False),
-    'tipo_user': fields.Str(required=False),
 }
 
 # ===============================================================================

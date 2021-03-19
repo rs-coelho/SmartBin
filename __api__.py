@@ -79,7 +79,7 @@ def upload_item_img():
 def get_full_item_list():
     return ItemControl.get_full_item_list()
 # ===============================================================
-# ===============           Invertory      ======================
+# ===============           Inventory      ======================
 
 
 @app.route('/insert/item/inventory', methods=['POST'])  # ok

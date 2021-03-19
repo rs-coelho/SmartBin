@@ -211,7 +211,7 @@ class ListaUsers(Base):
         return user
 
     @staticmethod
-    def change_user(id_user, args,nome=None, email=None, password=None, pontos=None, tipo_user=None):
+    def change_user(id_user, args):
         # chercher l'implementation pur changer quelque chose oú DB
         # https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
         user = db_session.query(ListaUsers).filter(ListaUsers.id_user == id_user).first()
@@ -220,7 +220,6 @@ class ListaUsers(Base):
         if 'email' in args.keys():
             user.email = args['email']
         if 'password' in args.keys():
-            passcode = args['password']
             user.password = generate_password_hash(str(args['password']))
         db_session.commit()
         return user
@@ -243,7 +242,7 @@ class InventarioItens(Base):
     __tablename__ = 'inventario_itens'
     __table_args__ = {'schema': schema_name}
 
-    id_inventory = Column(INTEGER(unsigned=True),primary_key=True)
+    id_inventory = Column(INTEGER(unsigned=True), primary_key=True)
     id_lixeira = Column(INTEGER(unsigned=True), ForeignKey(schema_name + '.lista_lixeiras.id_lixeira'),
                         primary_key=True)
     id_item = Column(String(12), ForeignKey(schema_name + '.lista_itens.id_item'), nullable=False)
