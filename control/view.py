@@ -8,29 +8,22 @@ class View(object):
     def success_with_message(message):
         result = OrderedDict()
         result['connected'] = 'true'
-        result['payload'] = OrderedDict()
-        result['payload']['code'] = 200
-        result['payload']['message'] = message
-        return jsonify(result)
+        result['message'] = message
+        return jsonify(result), 200
 
     @staticmethod
     def success(data):
         result = OrderedDict()
         result['connected'] = 'true'
-        result['payload'] = OrderedDict()
-        result['payload']['code'] = 200
-        result['payload']['message'] = 'SUCCESS'
-        result['payload']['data'] = data
-        return jsonify(result)
+        result['data'] = data
+        return jsonify(result), 200
 
     @staticmethod
     def accepted():
         result = OrderedDict()
         result['connected'] = 'true'
-        result['payload'] = OrderedDict()
-        result['payload']['code'] = 202
-        result['payload']['message'] = 'ACCEPTED'
-        return jsonify(result)
+        result['message'] = 'ACCEPTED'
+        return jsonify(result), 202
 
     @staticmethod
     def error(code, details):
@@ -38,10 +31,9 @@ class View(object):
                     409: 'Conflict', 500: 'Internal error'}
         result = OrderedDict()
         result['connected'] = 'true'
-        result['payload'] = OrderedDict()
-        result['payload']['error'] = OrderedDict()
-        result['payload']['error']['message'] = messages[code]
-        result['payload']['error']['details'] = details
+        result['error'] = OrderedDict()
+        result['error']['message'] = messages[code]
+        result['error']['details'] = details
         return jsonify(result), code
 
     @staticmethod
