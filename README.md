@@ -1,4 +1,4 @@
-# API LixeiraInteligente
+# API Smart Bin
 ### This is a simple API with JWT and DataBase Manipulation. 
 
 The API functions as follows input MySQL access data in settings.ini then create the database
@@ -32,7 +32,7 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 [POST] - /create/user
 
     {
-        "nome": "John Doe",
+        "name": "John Doe",
         "email": "johndoe@email.com",
         "password": "johnDpass"
     }
@@ -60,7 +60,7 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 
     {
         "id_user": "16",
-        "nome": "John Doe",
+        "name": "John Doe",
         "email": "johndoe@email.com",
         "password": "johnDpass",
         "pontos": "4059",
@@ -68,14 +68,14 @@ This API only works with 'Content-type' = "application/json", and that is to sen
     }
 
 -------------------------------------------
-### Itens
+### Items
 
 [POST] - /create/item  # Admin Authorization Required
 
     {
-        "nome": "Veja Mult",
+        "name": "Veja Mult",
         "material": "PL",
-        "peso": "0.100",
+        "weight": "0.100",
         "pontos": "35"
     }
 
@@ -105,7 +105,7 @@ This API only works with 'Content-type' = "application/json", and that is to sen
 
     {
         "id_user": "16",
-        "id_lixeira": "12",
+        "id_bin": "12",
         "id_item": "584557"
     }
 
@@ -115,38 +115,38 @@ This API only works with 'Content-type' = "application/json", and that is to sen
         "id_user": "16"
     }
 
-[POST] - /empty/lixeira # Authorization Required
+[POST] - /empty/bin # Authorization Required
 
     {
-         "id_lixeira": "12"
+         "id_bin": "12"
     }
 
 -------------------------------------------
-### Lixeira 
+### Bin 
 
-[POST] - /create/lixeira #Admin Authorization Required
+[POST] - /create/bin #Admin Authorization Required
 
     {
-        "endereco_fisico": "Av. Ficticia 36",
+        "address": "Av. Far Far Away 36",
         "capacity": "50",
         "status": "0"
     }
 
-[GET] - /get/lixeira
+[GET] - /get/bin
 
     {
-        "id_lixeira": "12"
+        "id_bin": "12"
     }
 
-[GET] - /get/lixeira/capacidade # Authorization Required
+[GET] - /get/bin/capacity # Authorization Required
 
     {
-        "id_lixeira": "12"
+        "id_bin": "12"
     }
 
-[POST] - /update/lixeira/capacidade  # Admin or Bin Authorization Required
+[POST] - /update/bin/capacity  # Admin or Bin Authorization Required
 
     {
-        "id_lixeira": "12",
+        "id_bin": "12",
         "capacity": "50"
     }

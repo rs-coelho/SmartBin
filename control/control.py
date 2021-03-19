@@ -9,9 +9,9 @@ from functools import wraps
 
 from control.view import View
 from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM, UPLOAD_ITEM_IMG
-from control.request_list import UPDATE_LIXEIRA_CAPACIDADE, GET_LIXEIRA, CREATE_LIXEIRA
+from control.request_list import UPDATE_BIN_CAPACITY, GET_BIN, CREATE_BIN
 from control.request_list import CREATE_INV_ITEM
-from model.model import ListaUsers, ListaItens, ListaLixeiras, InventarioItens
+from model.model import ListUsers, ListItems, ListBins, InventoryItems
 
 config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(__file__), '../settings/settings.ini'))
@@ -57,7 +57,7 @@ def token_verify_admin(f):
             return View.error(401, 'Missing Token')
 
         data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
-        if ListaUsers.get_user_type(data['id_user']) == 'AD':
+        if ListUsers.get_user_type(data['id_user']) == 'AD':
             return f(*args, **kwargs)
 
         return View.error(401, 'Invalid Token')
@@ -65,7 +65,7 @@ def token_verify_admin(f):
     return decorated
 
 
-def token_verify_admin_or_lixeira(f):
+def token_verify_admin_or_bin(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         # token = parser.parse(TOKEN_AUTH, request)
@@ -75,7 +75,7 @@ def token_verify_admin_or_lixeira(f):
             return View.error(401, 'Missing Token')
 
         data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
-        if ListaUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
+        if ListUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
             return f(*args, **kwargs)
 
         return View.error(401, 'Invalid Token')
@@ -90,10 +90,10 @@ class UserControl:
             args = parser.parse(CREATE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.create_user(args['nome'], args['email'], args['password'])
+        user = ListUsers.create_user(args['name'], args['email'], args['password'])
         if user == 0:
             return View.error(405, 'email already in use')
-        result = {'id_user': user.id_user, 'nome': user.nome, 'email': user.email}
+        result = {'id_user': user.id_user, 'name': user.name, 'email': user.email}
         return View.success(result)
 
     @staticmethod
@@ -102,8 +102,8 @@ class UserControl:
             args = parser.parse(GET_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.get_user(args['id_user'])
-        result = [{'id_user': rst.id_user, 'nome': rst.nome, 'email': rst.email} for rst in user]
+        user = ListUsers.get_user(args['id_user'])
+        result = [{'id_user': rst.id_user, 'name': rst.name, 'email': rst.email} for rst in user]
         return View.success(result)
 
     @staticmethod
@@ -112,7 +112,7 @@ class UserControl:
             args = parser.parse(LOGIN_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.login_user(args['email'], args['password'])
+        user = ListUsers.login_user(args['email'], args['password'])
         token = False
         if user:
             token = encode({'id_user': user.id_user, 'exp': datetime.utcnow() + timedelta(days=15)}, SECRET_KEY)
@@ -128,11 +128,11 @@ class UserControl:
             args = parser.parse(GET_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.delete_user(args['id_user'])
+        user = ListUsers.delete_user(args['id_user'])
         if user:
             return View.success('User Deleted')
         else:
-            return View.error(404,'User Not Found')
+            return View.error(404, 'User Not Found')
 
     @staticmethod
     def change_user():
@@ -140,7 +140,7 @@ class UserControl:
             args = parser.parse(CHANGE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListaUsers.change_user(args['id_user'], args)
+        user = ListUsers.change_user(args['id_user'], args)
         result = {'id_user': user.id_user}
         return View.success(result)
 
@@ -152,8 +152,8 @@ class ItemControl:
             args = parser.parse(CREATE_ITEM, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = ListaItens.create_item(args['nome'], args['material'], args['peso'], args['pontos'])
-        result = {'id_item': item.id_item, 'nome': item.nome, 'material': item.material}
+        item = ListItems.create_item(args['name'], args['material'], args['weight'], args['points'])
+        result = {'id_item': item.id_item, 'name': item.name, 'material': item.material}
         return View.success(result)
 
     @staticmethod
@@ -163,8 +163,9 @@ class ItemControl:
             print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = ListaItens.get_item(args['id_item'])
-        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material, 'img_base64': rst.img_base64}
+        item = ListItems.get_item(args['id_item'])
+        result = [{'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
+                   'img_base64': rst.img_base64}
                   for rst in item]
         return View.success(result)
 
@@ -174,32 +175,32 @@ class ItemControl:
             args = parser.parse(UPLOAD_ITEM_IMG, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = ListaItens.upload_item_img(args['id_item'], args['img_base64'])
+        item = ListItems.upload_item_img(args['id_item'], args['img_base64'])
         result = {'id_item': item.id_item, 'img_base64': item.img_base64}
         return View.success(result)
 
     @staticmethod
     def get_full_item_list():
         try:
-            item = ListaItens.get_full_item_list()
+            item = ListItems.get_full_item_list()
         except ValidationError as err:
             return View.error(400, str(err))
 
-        result = [{'id_item': rst.id_item, 'nome': rst.nome, 'material': rst.material, 'points': rst.pontos,
+        result = [{'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
                    'img_base64': rst.img_base64}
                   for rst in item]
         return View.success(result)
 
 
-class InventarioControl:
+class InventoryControl:
     @staticmethod
     def insert_item_from_user():
         try:
             args = parser.parse(CREATE_INV_ITEM, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventarioItens.insert_item_from_user(args['id_user'], args['id_lixeira'], args['id_item'])
-        result = {'id_user': item.id_user, 'id_lixeira': item.id_lixeira, 'id_item': item.id_item}
+        item = InventoryItems.insert_item_from_user(args['id_user'], args['id_bin'], args['id_item'])
+        result = {'id_user': item.id_user, 'id_bin': item.id_bin, 'id_item': item.id_item}
         return View.success(result)
 
     @staticmethod
@@ -208,64 +209,64 @@ class InventarioControl:
             args = parser.parse(GET_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventarioItens.get_items_from_user(args['id_user'])
-        result = [{'id_item': rst.id_item, 'id_lixeira': rst.id_lixeira} for rst in item]
+        item = InventoryItems.get_items_from_user(args['id_user'])
+        result = [{'id_item': rst.id_item, 'id_bin': rst.id_bin} for rst in item]
         return View.success(result)
 
     @staticmethod
     def empty_trash():
         try:
-            args = parser.parse(GET_LIXEIRA, request)
+            args = parser.parse(GET_BIN, request)
             print(args, 'This bin should be empty')
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventarioItens.empty_trash(args['id_lixeira'])
-        result = [{'id_item': rst.id_item, 'id_lixeira': rst.id_lixeira} for rst in item]
+        item = InventoryItems.empty_trash(args['id_bin'])
+        result = [{'id_item': rst.id_item, 'id_bin': rst.id_bin} for rst in item]
         return View.success(result)
 
 
-class LixeiraControl:
+class BinControl:
     @staticmethod
-    def create_lixeira():
+    def create_bin():
         try:
-            args = parser.parse(CREATE_LIXEIRA, request)
+            args = parser.parse(CREATE_BIN, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        lixeira = ListaLixeiras.create_lixeira(args['address'], args['capacity'], args['status'])
-        result = {'id_lixeira': lixeira.id_lixeira, 'address': lixeira.address, 'capacity': lixeira.capacity}
+        rec_bin = ListBins.create_bin(args['address'], args['capacity'], args['status'])
+        result = {'id_bin': rec_bin.id_bin, 'address': rec_bin.address, 'capacity': rec_bin.capacity}
         return View.success(result)
 
     @staticmethod
-    def get_lixeira():
+    def get_bin():
         try:
-            args = parser.parse(GET_LIXEIRA, request)
+            args = parser.parse(GET_BIN, request)
             print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        lixeira = ListaLixeiras.get_lixeira(args['id_lixeira'])
-        if not lixeira:
+        rec_bin = ListBins.get_bin(args['id_bin'])
+        if not rec_bin:
             return View.error(404, 'Bin not found')
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'address': lixeira[0].address}
+        result = {'id_bin': rec_bin[0].id_bin, 'address': rec_bin[0].address}
         return View.success(result)
 
     @staticmethod
-    def get_lixeira_capacidade():
+    def get_bin_capacity():
         try:
-            args = parser.parse(GET_LIXEIRA, request)
+            args = parser.parse(GET_BIN, request)
             print(args)
         except ValidationError as err:
             return View.error(400, str(err))
-        lixeira = ListaLixeiras.get_lixeira(args['id_lixeira'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity}
+        rec_bin = ListBins.get_bin(args['id_bin'])
+        result = {'id_bin': rec_bin[0].id_bin, 'capacity': rec_bin[0].capacity}
         return View.success(result)
 
     @staticmethod
-    def update_lixeiera_capacidade():
+    def update_bin_capacity():
         try:
-            args = parser.parse(UPDATE_LIXEIRA_CAPACIDADE, request)
+            args = parser.parse(UPDATE_BIN_CAPACITY, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        lixeira = ListaLixeiras.update_lixeiera_capacidade(args['id_lixeira'], args['capacity'])
-        result = {'id_lixeira': lixeira[0].id_lixeira, 'capacity': lixeira[0].capacity,
-                  'last_updated': lixeira[0].last_updated}
+        rec_bin = ListBins.update_bin_capacity(args['id_bin'], args['capacity'])
+        result = {'id_bin': rec_bin[0].id_bin, 'capacity': rec_bin[0].capacity,
+                  'last_updated': rec_bin[0].last_updated}
         return View.success(result)

@@ -9,10 +9,10 @@ TOKEN_AUTH = {
 
 
 CREATE_USER = {
-    'nome': fields.Str(required=True),
+    'name': fields.Str(required=True),
     'email': fields.Str(required=True),
     'password': fields.Str(required=True),
-    'pontos': fields.Str(required=False),
+    'points': fields.Str(required=False),
     'tipo_user': fields.Str(required=False),
 }
 
@@ -30,7 +30,7 @@ LOGIN_USER = {
 
 CHANGE_USER = {
     'id_user': fields.Str(required=True),
-    'nome': fields.Str(required=False),
+    'name': fields.Str(required=False),
     'email': fields.Str(required=False),
     'password': fields.Str(required=False),
 }
@@ -38,10 +38,10 @@ CHANGE_USER = {
 # ===============================================================================
 
 CREATE_ITEM = {
-    'nome': fields.Str(required=True),
+    'name': fields.Str(required=True),
     'material': fields.Str(required=True),
-    'peso': fields.Str(required=True),
-    'pontos': fields.Str(required=False),
+    'weight': fields.Str(required=True),
+    'points': fields.Str(required=False),
 
 }
 
@@ -50,6 +50,7 @@ GET_ITEM = {
     'id_item': fields.Str(required=True)
 
 }
+
 
 UPLOAD_ITEM_IMG = {
     'id_item': fields.Str(required=True),
@@ -60,26 +61,26 @@ UPLOAD_ITEM_IMG = {
 # ===============================================================================
 
 CREATE_INV_ITEM = {
-    'id_lixeira': fields.Str(required=True),
+    'id_bin': fields.Str(required=True),
     'id_item': fields.Str(required=True),
     'id_user': fields.Str(required=True),
 }
 
 # ===============================================================================
 
-CREATE_LIXEIRA = {
+CREATE_BIN = {
     'address': fields.Str(required=True),
     'capacity': fields.Str(required=False),
     'status': fields.Str(required=False),
 }
 
 
-GET_LIXEIRA = {
-    'id_lixeira': fields.Str(required=True),
+GET_BIN = {
+    'id_bin': fields.Str(required=True),
 }
 
 
-UPDATE_LIXEIRA_CAPACIDADE = {
-    'id_lixeira': fields.Str(required=True),
+UPDATE_BIN_CAPACITY = {
+    'id_bin': fields.Str(required=True),
     'capacity': fields.Str(required=True),
 }

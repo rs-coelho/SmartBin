@@ -1,9 +1,9 @@
 from flask import Flask
 
 from control.view import View
-from control.control import UserControl, ItemControl, LixeiraControl, SECRET_KEY
-from control.control import token_verify_admin_or_lixeira, token_verify_admin, token_verify
-from control.control import InventarioControl
+from control.control import UserControl, ItemControl, BinControl, SECRET_KEY
+from control.control import token_verify_admin_or_bin, token_verify_admin, token_verify
+from control.control import InventoryControl
 from flask_cors import CORS, cross_origin
 from flask_bcrypt import Bcrypt
 
@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 @app.route('/')
 @cross_origin()
 def main():
-    return View.success('Bem vindx ao web-service da Lixeira Inteligente')
+    return View.success('Welcome to the Smart Bins web-service!')
 # ===============================================================
 # ===============           User List      ======================
 
@@ -85,45 +85,45 @@ def get_full_item_list():
 @app.route('/insert/item/inventory', methods=['POST'])  # ok
 @token_verify
 def insert_item_from_user():
-    return InventarioControl.insert_item_from_user()
+    return InventoryControl.insert_item_from_user()
 
 
 @app.route('/get/user/inventory', methods=['GET'])  # ok
 @token_verify
 def get_items_from_user():
-    return InventarioControl.get_items_from_user()
+    return InventoryControl.get_items_from_user()
 
 
-@app.route('/empty/lixeira', methods=['POST'])  # works but needs ajusts
+@app.route('/empty/bin', methods=['POST'])  # works but needs ajusts
 @token_verify
 def empty_trash():
-    return InventarioControl.empty_trash()
+    return InventoryControl.empty_trash()
 # ===============================================================
 # ===============           Bin List       ======================
 
 
-@app.route('/create/lixeira', methods=['POST'])  # Admin ok
+@app.route('/create/bin', methods=['POST'])  # Admin ok
 @token_verify_admin
-def create_lixeira():
-    return LixeiraControl.create_lixeira()
+def create_bin():
+    return BinControl.create_bin()
 
 
-@app.route('/get/lixeira', methods=['GET'])  # ok
+@app.route('/get/bin', methods=['GET'])  # ok
 @token_verify
-def get_lixeira():
-    return LixeiraControl.get_lixeira()
+def get_bin():
+    return BinControl.get_bin()
 
 
-@app.route('/get/lixeira/capacidade', methods=['GET'])  # ok
+@app.route('/get/bin/capacity', methods=['GET'])  # ok
 @token_verify
-def get_lixeiera_capacidade():
-    return LixeiraControl.get_lixeira_capacidade()
+def get_bin_capacity():
+    return BinControl.get_bin_capacity()
 
 
-@app.route('/update/lixeira/capacidade', methods=['POST'])  # Admin ok
-@token_verify_admin_or_lixeira
-def update_lixeiera_capacidade():
-    return LixeiraControl.update_lixeiera_capacidade()
+@app.route('/update/bin/capacity', methods=['POST'])  # Admin ok
+@token_verify_admin_or_bin
+def update_bin_capacity():
+    return BinControl.update_bin_capacity()
 # ===============================================================
 
 
