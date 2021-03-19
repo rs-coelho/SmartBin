@@ -36,7 +36,7 @@ def get_user():
     return UserControl.get_user()
 
 
-@app.route('/login/user', methods=['GET'])  # ok
+@app.route('/login/user', methods=['POST'])  # ok
 def login_user():
     return UserControl.login_user()
 
