@@ -29,7 +29,6 @@ LOGIN_USER = {
 
 
 CHANGE_USER = {
-    'id_user': fields.Str(required=True),
     'name': fields.Str(required=False),
     'email': fields.Str(required=False),
     'password': fields.Str(required=False),
@@ -38,6 +37,7 @@ CHANGE_USER = {
 # ===============================================================================
 
 CREATE_ITEM = {
+    'id_item': fields.Str(required=True),
     'name': fields.Str(required=True),
     'material': fields.Str(required=True),
     'weight': fields.Str(required=True),
@@ -62,8 +62,7 @@ UPLOAD_ITEM_IMG = {
 
 CREATE_INV_ITEM = {
     'id_bin': fields.Str(required=True),
-    'id_item': fields.Str(required=True),
-    'id_user': fields.Str(required=True),
+    'id_item': fields.Str(required=True)
 }
 
 # ===============================================================================

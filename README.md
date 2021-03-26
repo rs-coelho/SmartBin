@@ -16,6 +16,7 @@ Obs: Later a .json will be added containing all the routes that are contemplated
 ### Below are the libraries necessary for this project
 
  - datetime
+ - flasgger
  - flask
  - flask_cors
  - flask_bcrypt
@@ -36,6 +37,7 @@ This API only works with 'Content-type' = "application/json", and that is to sen
         "email": "johndoe@email.com",
         "password": "johnDpass"
     }
+CODE: [200]
 
 [GET] - /get/user # Authorization Required
 

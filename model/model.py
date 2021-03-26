@@ -104,10 +104,10 @@ class ListItems(Base):
         self.img_base64 = ''
 
     @staticmethod
-    def create_item(name=None, material=None, weight=None, points=0):
+    def create_item(id_item, name=None, material=None, weight=None, points=0):
         list_size = len(db_session.query(ListItems).all())
         item = ListItems()
-        item.id_item = list_size + 1
+        item.id_item = id_item
         item.name = name
         item.material = material
         item.weight = weight
@@ -156,14 +156,14 @@ class ListUsers(Base):
 
     @staticmethod
     def create_user(name=None, email=None, password=None, points=0, type_user='CL'):
-        list_size = len(db_session.query(ListUsers).all())
+        list_id = int(db_session.query(ListUsers.id_user).all()[-1][0])
         email_list = db_session.query(ListUsers.email).all()
 
         if (email,) in email_list:
             return 0
 
         user = ListUsers()
-        user.id_user = list_size + 1
+        user.id_user = list_id + 1
         user.name = name
         user.email = email
         user.password = generate_password_hash(password)

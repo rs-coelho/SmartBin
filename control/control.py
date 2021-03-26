@@ -34,14 +34,6 @@ def token_verify(f):
         except:
             return View.error(401, 'Invalid Token')
 
-        try:
-            get_user = parser.parse(GET_USER, request)['id_user']
-            if int(get_user) != int(data['id_user']):
-                return View.error(401, 'Unauthorized Access, wrong user')
-
-        except:
-            return f(*args, **kwargs)
-
         return f(*args, **kwargs)
 
     return decorated
@@ -75,6 +67,7 @@ def token_verify_admin_or_bin(f):
             return View.error(401, 'Missing Token')
 
         data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
+        print(ListUsers.get_user_type(data['id_user']))
         if ListUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
             return f(*args, **kwargs)
 
@@ -99,10 +92,11 @@ class UserControl:
     @staticmethod
     def get_user():
         try:
-            args = parser.parse(GET_USER, request)
+            user = ListUsers.get_user(decode(request.headers['Authorization'],
+                                             SECRET_KEY, algorithms='HS256')['id_user'])
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListUsers.get_user(args['id_user'])
+
         result = [{'id_user': rst.id_user, 'name': rst.name, 'email': rst.email} for rst in user]
         return View.success(result)
 
@@ -125,10 +119,11 @@ class UserControl:
     @staticmethod
     def delete_user():
         try:
-            args = parser.parse(GET_USER, request)
+            user = ListUsers.delete_user(decode(request.headers['Authorization'],
+                                                SECRET_KEY, algorithms='HS256')['id_user'])
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListUsers.delete_user(args['id_user'])
+
         if user:
             return View.success('User Deleted')
         else:
@@ -140,7 +135,8 @@ class UserControl:
             args = parser.parse(CHANGE_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        user = ListUsers.change_user(args['id_user'], args)
+        user = ListUsers.change_user(decode(request.headers['Authorization'],
+                                            SECRET_KEY, algorithms='HS256')['id_user'], args)
         result = {'id_user': user.id_user}
         return View.success(result)
 
@@ -152,7 +148,7 @@ class ItemControl:
             args = parser.parse(CREATE_ITEM, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = ListItems.create_item(args['name'], args['material'], args['weight'], args['points'])
+        item = ListItems.create_item(args['id_item'], args['name'], args['material'], args['weight'], args['points'])
         result = {'id_item': item.id_item, 'name': item.name, 'material': item.material}
         return View.success(result)
 
@@ -199,7 +195,9 @@ class InventoryControl:
             args = parser.parse(CREATE_INV_ITEM, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventoryItems.insert_item_from_user(args['id_user'], args['id_bin'], args['id_item'])
+        item = InventoryItems.insert_item_from_user(decode(request.headers['Authorization'],
+                                                           SECRET_KEY, algorithms='HS256')['id_user'],
+                                                    args['id_bin'], args['id_item'])
         result = {'id_user': item.id_user, 'id_bin': item.id_bin, 'id_item': item.id_item}
         return View.success(result)
 
@@ -209,7 +207,8 @@ class InventoryControl:
             args = parser.parse(GET_USER, request)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventoryItems.get_items_from_user(args['id_user'])
+        item = InventoryItems.get_items_from_user(decode(request.headers['Authorization'],
+                                                         SECRET_KEY, algorithms='HS256')['id_user'])
         result = [{'id_item': rst.id_item, 'id_bin': rst.id_bin} for rst in item]
         return View.success(result)
 

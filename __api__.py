@@ -1,4 +1,5 @@
 from flask import Flask
+from flasgger import Swagger
 
 from control.view import View
 from control.control import UserControl, ItemControl, BinControl, SECRET_KEY
@@ -11,6 +12,26 @@ app = Flask(__name__)
 cors = CORS(app)
 bcrypt = Bcrypt(app)
 
+app.config["SWAGGER"] = {"title": "Swagger-UI", "uiversion": 3}
+
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": "apispec_1",
+            "route": "/apispec_1.json",
+            "rule_filter": lambda rule: True,  # all in
+            "model_filter": lambda tag: True,  # all in
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    # "static_folder": "static",  # must be set by user
+    "swagger_ui": True,
+    "specs_route": "/apidocs/",
+}
+
+swagger = Swagger(app, config=swagger_config)
+
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["JSON_SORT_KEYS"] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -21,6 +42,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 @cross_origin()
 def main():
     return View.success('Welcome to the Smart Bins web-service!')
+
 # ===============================================================
 # ===============           User List      ======================
 
@@ -38,6 +60,9 @@ def get_user():
 
 @app.route('/login/user', methods=['POST'])  # ok
 def login_user():
+    """
+        file: route_docs/login_user.yml
+    """
     return UserControl.login_user()
 
 
@@ -52,6 +77,7 @@ def delete_user():  # First delete inventory then the user,
 @token_verify
 def change_user():
     return UserControl.change_user()
+
 # ===============================================================
 # ===============           Item List      ======================
 
@@ -78,6 +104,7 @@ def upload_item_img():
 @token_verify
 def get_full_item_list():
     return ItemControl.get_full_item_list()
+
 # ===============================================================
 # ===============           Inventory      ======================
 
@@ -98,6 +125,7 @@ def get_items_from_user():
 @token_verify
 def empty_trash():
     return InventoryControl.empty_trash()
+
 # ===============================================================
 # ===============           Bin List       ======================
 
@@ -121,7 +149,7 @@ def get_bin_capacity():
 
 
 @app.route('/update/bin/capacity', methods=['POST'])  # Admin ok
-@token_verify_admin_or_bin
+@token_verify_admin  # later change to admin_or_bin
 def update_bin_capacity():
     return BinControl.update_bin_capacity()
 # ===============================================================

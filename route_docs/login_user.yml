@@ -1,0 +1,34 @@
+---
+    parameters:
+      - name: Body
+        in: body
+        type: string
+        required: true
+        default: {
+          "email": "d@email.com",
+          "password": "rodrigo"
+        }
+        Accept: '*/*'
+    definitions:
+      email:
+        type: string
+      password:
+        type: string
+    responses:
+      200:
+        description: A list of colors (may be filtered by palette)
+        schema:
+          $ref: '{
+                   "connected": "true",
+                   "data": {
+                     "token": "USER_TOKEN",
+                     "email": "d@email.com"
+                   }
+                 }'
+        examples: {
+          "connected": "true",
+          "data": {
+            "token": "RESPONSE_TOKEN",
+            "email": "d@email.com"
+            }
+          }
