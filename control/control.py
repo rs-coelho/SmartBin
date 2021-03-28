@@ -207,13 +207,13 @@ class InventoryControl:
                                                              SECRET_KEY, algorithms='HS256')['id_user'])
             id_list = []
             [id_list.append(x.id_item) for x in items]
-            items_set = set(id_list)
-            full_list = ListItems.get_item_list(items_set)
+            full_list = ListItems.get_item_list(id_list)
+            qtd_list = {item: full_list.count(item) for item in full_list}
 
         except ValidationError as err:
             return View.error(400, str(err))
         result = [{'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
-                   'img_base64': rst.img_base64} for rst in full_list]
+                   'img_base64': rst.img_base64, 'quantity': qtd_list[rst]} for rst in qtd_list.keys()]
         return View.success(result)
 
     @staticmethod
