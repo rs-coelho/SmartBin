@@ -134,6 +134,13 @@ class ListItems(Base):
     def get_full_item_list():
         return db_session.query(ListItems).all()
 
+    @staticmethod
+    def get_item_list(id_item_list):
+        final_list = []
+        for id_item in id_item_list:
+            final_list.append(db_session.query(ListItems).filter_by(id_item=id_item).first())
+        return final_list
+
 
 class ListUsers(Base):
     __tablename__ = 'list_users'

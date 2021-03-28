@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 from control.view import View
-from control.request_list import CREATE_USER, GET_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, GET_ITEM, UPLOAD_ITEM_IMG
+from control.request_list import CREATE_USER, CHANGE_USER, LOGIN_USER, CREATE_ITEM, UPLOAD_ITEM_IMG
 from control.request_list import UPDATE_BIN_CAPACITY, GET_BIN, CREATE_BIN
 from control.request_list import CREATE_INV_ITEM
 from model.model import ListUsers, ListItems, ListBins, InventoryItems
@@ -201,11 +201,18 @@ class InventoryControl:
     @staticmethod
     def get_items_from_user():
         try:
-            item = InventoryItems.get_items_from_user(decode(request.headers['Authorization'],
+            items = InventoryItems.get_items_from_user(decode(request.headers['Authorization'],
                                                              SECRET_KEY, algorithms='HS256')['id_user'])
+            id_list = []
+            [id_list.append(x.id_item) for x in items]
+            items_set = set(id_list)
+            print(list(items_set))
+            full_list = ListItems.get_item_list(items_set)
+
         except ValidationError as err:
             return View.error(400, str(err))
-        result = [{'id_item': rst.id_item, 'id_bin': rst.id_bin} for rst in item]
+        result = [{'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
+                   'img_base64': rst.img_base64} for rst in full_list]
         return View.success(result)
 
     @staticmethod
