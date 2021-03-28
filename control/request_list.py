@@ -80,6 +80,6 @@ GET_BIN = {
 
 
 UPDATE_BIN_CAPACITY = {
-    'id_bin': fields.Str(required=True),
-    'capacity': fields.Str(required=True),
+    'id_bin': fields.Int(required=True),
+    'capacity': fields.Int(required=True),
 }
