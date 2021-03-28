@@ -203,11 +203,10 @@ class InventoryControl:
     @staticmethod
     def get_items_from_user():
         try:
-            args = parser.parse(GET_USER, request)
+            item = InventoryItems.get_items_from_user(decode(request.headers['Authorization'],
+                                                             SECRET_KEY, algorithms='HS256')['id_user'])
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventoryItems.get_items_from_user(decode(request.headers['Authorization'],
-                                                         SECRET_KEY, algorithms='HS256')['id_user'])
         result = [{'id_item': rst.id_item, 'id_bin': rst.id_bin} for rst in item]
         return View.success(result)
 
