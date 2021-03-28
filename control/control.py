@@ -154,12 +154,11 @@ class ItemControl:
     @staticmethod
     def get_item(id_item):
         try:
-            item = ListItems.get_item(id_item)
+            rst = ListItems.get_item(id_item)
         except ValidationError as err:
             return View.error(400, str(err))
-        result = [{'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
+        result = {'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
                    'img_base64': rst.img_base64}
-                  for rst in item]
         return View.success(result)
 
     @staticmethod
@@ -190,11 +189,14 @@ class InventoryControl:
     def insert_item_from_user():
         try:
             args = parser.parse(CREATE_INV_ITEM, request)
+            id_user = decode(request.headers['Authorization'], SECRET_KEY, algorithms='HS256')['id_user']
+            item = InventoryItems.insert_item_from_user(id_user,
+                                                        args['id_bin'], args['id_item'])
+            prox_item = ListItems.get_item(args['id_item'])
+            ListUsers.update_user_points(id_user, prox_item.points)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = InventoryItems.insert_item_from_user(decode(request.headers['Authorization'],
-                                                           SECRET_KEY, algorithms='HS256')['id_user'],
-                                                    args['id_bin'], args['id_item'])
+
         result = {'id_user': item.id_user, 'id_bin': item.id_bin, 'id_item': item.id_item}
         return View.success(result)
 
@@ -206,7 +208,6 @@ class InventoryControl:
             id_list = []
             [id_list.append(x.id_item) for x in items]
             items_set = set(id_list)
-            print(list(items_set))
             full_list = ListItems.get_item_list(items_set)
 
         except ValidationError as err:

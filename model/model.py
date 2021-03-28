@@ -120,7 +120,7 @@ class ListItems(Base):
 
     @staticmethod
     def get_item(id_item):
-        item = db_session.query(ListItems).filter_by(id_item=id_item).all()
+        item = db_session.query(ListItems).filter_by(id_item=id_item).first()
         return item
 
     @staticmethod
@@ -203,8 +203,8 @@ class ListUsers(Base):
 
     @staticmethod
     def update_user_points(id_user, points):
-        user = db_session.query(ListBins).filter_by(id_user=id_user).all()
-        user[0].points = points
+        user = db_session.query(ListUsers).filter_by(id_user=id_user).all()
+        user[0].points += points
         db_session.commit()
         return user
 
