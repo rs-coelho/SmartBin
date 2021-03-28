@@ -94,10 +94,10 @@ def create_item():
     return ItemControl.create_item()
 
 
-@app.route('/get/item', methods=['GET'])  # ok
+@app.route('/get/item/<id_item>', methods=['GET'])  # ok
 @token_verify
-def get_item():
-    return ItemControl.get_item()
+def get_item(id_item):
+    return ItemControl.get_item(id_item)
 
 
 @app.route('/post/item/img', methods=['POST'])  # needs adjusts route and request ok, but DB does not save the img

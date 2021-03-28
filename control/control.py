@@ -152,13 +152,11 @@ class ItemControl:
         return View.success(result)
 
     @staticmethod
-    def get_item():
+    def get_item(id_item):
         try:
-            args = parser.parse(GET_ITEM, request)
-            print(args)
+            item = ListItems.get_item(id_item)
         except ValidationError as err:
             return View.error(400, str(err))
-        item = ListItems.get_item(args['id_item'])
         result = [{'id_item': rst.id_item, 'name': rst.name, 'material': rst.material, 'points': rst.points,
                    'img_base64': rst.img_base64}
                   for rst in item]
