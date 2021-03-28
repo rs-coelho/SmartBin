@@ -67,7 +67,6 @@ def token_verify_admin_or_bin(f):
             return View.error(401, 'Missing Token')
 
         data = decode(token['Authorization'], SECRET_KEY, algorithms='HS256')
-        print(ListUsers.get_user_type(data['id_user']))
         if ListUsers.get_user_type(data['id_user']) in ('AD', 'LX'):
             return f(*args, **kwargs)
 

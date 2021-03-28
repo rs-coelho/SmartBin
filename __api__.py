@@ -47,6 +47,12 @@ def main():
 # ===============           User List      ======================
 
 
+@app.route('/token', methods=['GET'])  # ok
+@token_verify
+def token():
+    return View.success_with_message('This token is valid')
+
+
 @app.route('/create/user', methods=['POST'])  # ok
 def create_user():
     return UserControl.create_user()
@@ -149,7 +155,7 @@ def get_bin_capacity():
 
 
 @app.route('/update/bin/capacity', methods=['POST'])  # Admin ok
-@token_verify_admin  # later change to admin_or_bin
+@token_verify_admin_or_bin
 def update_bin_capacity():
     return BinControl.update_bin_capacity()
 # ===============================================================

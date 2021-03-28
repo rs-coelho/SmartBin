@@ -37,13 +37,32 @@ This API only works with 'Content-type' = "application/json", and that is to sen
         "email": "johndoe@email.com",
         "password": "johnDpass"
     }
-CODE: [200]
+
+ - CODE: [200]
+
+        {
+            "connected": "true",
+            "data": {
+                "id_user": X,
+                "name": "John Doe",
+                "email": "johnd@email.com"
+            }
+        }
 
 [GET] - /get/user # Authorization Required
 
-    {
-        "id_user": "16"
-    }
+ - CODE: [200]
+   
+        {
+            "connected": "true",
+            "data": [
+                {
+                    "id_user": X,
+                    "name": "YOUR NAME",
+                    "email": "your_email@email.com"
+                }
+            ]
+        }
 
 [POST] - /login/user 
 
@@ -61,7 +80,6 @@ CODE: [200]
 [POST] - /change/user  # Authorization Required
 
     {
-        "id_user": "16",
         "name": "John Doe",
         "email": "johndoe@email.com",
         "password": "johnDpass",
@@ -106,16 +124,13 @@ CODE: [200]
 [POST] - /insert/item/inventory # Authorization Required
 
     {
-        "id_user": "16",
         "id_bin": "12",
         "id_item": "584557"
     }
 
 [GET] - /get/user/inventory # Authorization Required
     
-    {
-        "id_user": "16"
-    }
+    
 
 [POST] - /empty/bin # Authorization Required
 
