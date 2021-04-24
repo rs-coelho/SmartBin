@@ -105,7 +105,6 @@ class ListItems(Base):
 
     @staticmethod
     def create_item(id_item, name=None, material=None, weight=None, points=0):
-        list_size = len(db_session.query(ListItems).all())
         item = ListItems()
         item.id_item = id_item
         item.name = name
@@ -113,7 +112,6 @@ class ListItems(Base):
         item.weight = weight
         item.points = points
         item.img_base64 = None
-        print(item.name, item.material, item.weight)
         db_session.add(item)
         db_session.commit()
         return item

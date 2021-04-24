@@ -130,8 +130,6 @@ class UserControl:
         except ValidationError as err:
             return View.error(400, str(err))
 
-
-
     @staticmethod
     def change_user():
         try:
@@ -198,6 +196,8 @@ class InventoryControl:
         try:
             args = parser.parse(CREATE_INV_ITEM, request)
             id_user = decode(request.headers['Authorization'], SECRET_KEY, algorithms='HS256')['id_user']
+            if args['id_item'] not in ListItems.get_full_item_list():
+                return View.error(404, 'Item not found in')
             item = InventoryItems.insert_item_from_user(id_user, args['id_bin'], args['id_item'])
             prox_item = ListItems.get_item(args['id_item'])
             ListUsers.update_user_points(id_user, prox_item.points)
