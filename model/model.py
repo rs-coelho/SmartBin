@@ -192,10 +192,10 @@ class ListUsers(Base):
     def login_user(email, password):
         filter_ = [ListUsers.email == email, ]
         user = db_session.query(ListUsers).filter(and_(*filter_)).first()
-        authorization = check_password_hash(user.password, password)
-
-        if authorization:
-            return user
+        if user:
+            authorization = check_password_hash(user.password, password)
+            if authorization:
+                return user
 
         return False
 
