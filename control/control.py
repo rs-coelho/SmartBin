@@ -196,7 +196,8 @@ class InventoryControl:
         try:
             args = parser.parse(CREATE_INV_ITEM, request)
             id_user = decode(request.headers['Authorization'], SECRET_KEY, algorithms='HS256')['id_user']
-            if args['id_item'] not in ListItems.get_full_item_list():
+            lista_item_ids = [x.id_item for x in ListItems.get_full_item_list()]
+            if args['id_item'] not in lista_item_ids:
                 return View.error(404, 'Item not found in')
             item = InventoryItems.insert_item_from_user(id_user, args['id_bin'], args['id_item'])
             prox_item = ListItems.get_item(args['id_item'])
